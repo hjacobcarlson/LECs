@@ -186,7 +186,7 @@ LTDB_2015_2019_sample <- LTDB_2015_2019_sample %>% rename(TRTID10 = tractid)
 install.packages("sf")
 library(sf)
 str(LTDB_2020)
-census_2020_shp <- st_read("data/shp/nyct2020_24c/nyct2020.shp")
+census_2020_shp <- st_read("data/nyct2020_24c/nyct2020.shp")
 census_2020_shp <- census_2020_shp %>% rename(TRTID10 = GEOID)
 census_2020_shp$TRTID10 <- as.numeric(census_2020_shp$TRTID10)
 
@@ -211,11 +211,12 @@ tract_2020 <- LTDB_2020 %>%  rename(hinc = hinc19,
          pwht = wht/pop,
          pblk = blk/pop) %>%
   select(TRTID10, hinc,
-         powner, pwht, pblk, pop) %>%
+         powner, pwht, pblk, pop, -geometry) %>%
   mutate(
     across(c(powner, pwht, pblk), 
            ~ ifelse(is.na(.), NA, paste0(sprintf("%.2f", . * 100))))
   ) %>% mutate(year = "2020")
+tract_2020 <- st_drop_geometry(tract_2020)
 
 # combining all years
 tract <- bind_rows(tract_70, tract_80, tract_90, tract_2000, tract_2010, tract_2020) %>% group_by(year)%>% select(year, everything()) %>% group_by(year) %>%
