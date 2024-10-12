@@ -186,8 +186,8 @@ LTDB_2015_2019_sample <- LTDB_2015_2019_sample %>% rename(TRTID10 = tractid)
 install.packages("sf")
 library(sf)
 str(LTDB_2020)
-census_2020_shp <- st_read("data/nyct2020_24c/nyct2020.shp") 
-census_2020_shp <- census_2020_shp %>% rename(TRTID10 = GEOID)
+census_2020_shp <- st_read("data/nyct2010_24c/nyct2010.shp") 
+census_2020_shp <- census_2020_shp %>% rename(TRTID10 = CTIDFP00)
 census_2020_shp$TRTID10 <- as.numeric(census_2020_shp$TRTID10)
 
 # match census with 2020 to get only NY tracts 
@@ -211,7 +211,7 @@ tract_2020 <- LTDB_2020 %>%  rename(hinc = hinc19,
          pwht = wht/pop,
          pblk = blk/pop) %>%
   select(TRTID10, hinc,
-         powner, pwht, pblk, pop) %>%
+         powner, pwht, pblk, pop) %>% st_drop_geometry() %>% 
   mutate(
     across(c(powner, pwht, pblk), 
            ~ ifelse(is.na(.), NA, paste0(sprintf("%.2f", . * 100))))
