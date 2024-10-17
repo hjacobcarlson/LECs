@@ -186,7 +186,7 @@ LTDB_2015_2019_sample <- LTDB_2015_2019_sample %>% rename(TRTID10 = tractid)
 install.packages("sf")
 library(sf)
 str(LTDB_2020)
-census_2020_shp <- st_read("data/nyct2020_24c/nyct2020.shp")
+census_2020_shp <- st_read("/Users/hcarlson/Downloads/2010 Census Tracts (1)/geo_export_cc355fdc-3fa1-4088-b402-d6479466a9f6.shp")
 census_2020_shp <- census_2020_shp %>% rename(TRTID10 = GEOID)
 census_2020_shp$TRTID10 <- as.numeric(census_2020_shp$TRTID10)
 
