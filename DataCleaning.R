@@ -186,8 +186,8 @@ LTDB_2015_2019_sample <- LTDB_2015_2019_sample %>% rename(TRTID10 = tractid)
 install.packages("sf")
 library(sf)
 str(LTDB_2020)
-census_2020_shp <- st_read("/Users/hcarlson/Downloads/2010 Census Tracts (1)/geo_export_cc355fdc-3fa1-4088-b402-d6479466a9f6.shp")
-census_2020_shp <- census_2020_shp %>% rename(TRTID10 = GEOID)
+census_2020_shp <- st_read("data/nyct2010_24c/nyct2010.shp") 
+census_2020_shp <- census_2020_shp %>% rename(TRTID10 = CTIDFP00)
 census_2020_shp$TRTID10 <- as.numeric(census_2020_shp$TRTID10)
 
 # match census with 2020 to get only NY tracts 
@@ -211,12 +211,11 @@ tract_2020 <- LTDB_2020 %>%  rename(hinc = hinc19,
          pwht = wht/pop,
          pblk = blk/pop) %>%
   select(TRTID10, hinc,
-         powner, pwht, pblk, pop, -geometry) %>%
+         powner, pwht, pblk, pop) %>% st_drop_geometry() %>% 
   mutate(
     across(c(powner, pwht, pblk), 
            ~ ifelse(is.na(.), NA, paste0(sprintf("%.2f", . * 100))))
   ) %>% mutate(year = "2020")
-tract_2020 <- st_drop_geometry(tract_2020)
 
 # combining all years
 tract <- bind_rows(tract_70, tract_80, tract_90, tract_2000, tract_2010, tract_2020) %>% group_by(year)%>% select(year, everything()) %>% group_by(year) %>%
@@ -234,7 +233,7 @@ coops_shp <- st_transform(coops_shp, st_crs(census_2020_shp))
 library(sf)
 coop_tract_intersect <- st_intersection(census_2020_shp, coops_shp) %>%
   as_tibble() %>%
-  select(-geometry, -CDEligibil)  
+  select(-CDEligibil)  
 
 #combine tract data from LTDB with co-op tracts 
 coops7020 <- left_join(coop_tract_intersect, tract, by = "TRTID10") %>% select(-geometry, -CTLabel, -CT2020, -BoroCT2020, -NTA2020, -CDTA2020, -PUMA, -Shape_Leng, -Shape_Area)
