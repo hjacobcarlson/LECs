@@ -20,13 +20,17 @@ tract_70 <- LTDB_1970 %>%  rename(hinc = HINC70,
                                   ohu = OHU70,
                                   wht = WHITE70,
                                   blk = BLACK70,
-                                  pop = POP70) %>%
+                                  pop = POP70,
+                                  hs = HS70,
+                                 col = COL70, 
+                                  unemp = UNEMP70, 
+                                  mrent = MRENT70) %>%
   mutate(
     powner = owner / ohu,
     pwht = wht / pop,
     pblk = blk / pop
   ) %>%
-  select(TRTID10, hinc, powner, pwht, pblk, pop) %>%
+  select(TRTID10, hinc, powner, pwht, pblk, pop, hs, col, unemp, mrent) %>%
   mutate(
     across(c(powner, pwht, pblk), 
            ~ ifelse(is.na(.), NA, paste0(sprintf("%.2f", . * 100)))),
@@ -60,12 +64,15 @@ tract_80 <- LTDB_1980 %>%  rename(hinc = hinc80,
                                   ohu = OHU80,
                                   wht = NHWHT80,
                                   blk = NHBLK80,
-                                  pop = POP80) %>%
+                                  pop = POP80, hs = hs80,
+                                  col = col80, 
+                                  unemp = unemp80, 
+                                  mrent = MRENT80) %>%
   mutate(powner = owner/ohu,
          pwht = wht/pop,
          pblk = blk/pop) %>%
   select(TRTID10, hinc,
-         powner, pwht, pblk, pop) %>%
+         powner, pwht, pblk, pop, hs, col, unemp, mrent) %>%
   mutate(
     across(c(powner, pwht, pblk), 
            ~ ifelse(is.na(.), NA, paste0(sprintf("%.2f", . * 100))))
@@ -93,12 +100,15 @@ tract_90 <- LTDB_1990 %>%  rename(hinc = HINC90,
                                   ohu = OHU90,
                                   wht = NHWHT90,
                                   blk = NHBLK90,
-                                  pop = POP90) %>%
+                                  pop = POP90, hs = HS90,
+                                  col = COL90, 
+                                  unemp = UNEMP90, 
+                                  mrent = MRENT90) %>% 
   mutate(powner = owner/ohu,
          pwht = wht/pop,
          pblk = blk/pop) %>%
   select(TRTID10, hinc,
-         powner, pwht, pblk, pop) %>%
+         powner, pwht, pblk, pop, hs, col, unemp, mrent) %>%
   mutate(
     across(c(powner, pwht, pblk), 
            ~ ifelse(is.na(.), NA, paste0(sprintf("%.2f", . * 100))))
@@ -126,12 +136,15 @@ tract_2000 <- LTDB_2000 %>%  rename(hinc = HINC00.y,
                                     ohu = HU00,
                                     wht = NHWHT00,
                                     blk = NHBLK00,
-                                    pop = POP00) %>%
+                                    pop = POP00, hs = HS00.y,
+                                    col = COL00.y, 
+                                    unemp = UNEMP00.y, 
+                                    mrent = MRENT00.y) %>%
   mutate(powner = owner/ohu,
          pwht = wht/pop,
          pblk = blk/pop) %>%
   select(TRTID10, hinc,
-         powner, pwht, pblk, pop) %>%
+         powner, pwht, pblk, pop, hs, col, unemp, mrent) %>%
   mutate(
     across(c(powner, pwht, pblk), 
            ~ ifelse(is.na(.), NA, paste0(sprintf("%.2f", . * 100))))
@@ -162,12 +175,15 @@ tract_2010 <- LTDB_2010 %>%  rename(hinc = hinc12,
                                     ohu = hu10,
                                     wht = nhwht10,
                                     blk = nhblk10,
-                                    pop = pop10) %>%
+                                    pop = pop10, hs = hs12,
+                                    col = col12, 
+                                    unemp = unemp12, 
+                                    mrent = mrent12) %>%
   mutate(powner = owner/ohu,
          pwht = wht/pop,
          pblk = blk/pop) %>%
   select(TRTID10, hinc,
-         powner, pwht, pblk, pop) %>%
+         powner, pwht, pblk, pop, hs, col, unemp, mrent) %>%
   mutate(
     across(c(powner, pwht, pblk), 
            ~ ifelse(is.na(.), NA, paste0(sprintf("%.2f", . * 100))))
@@ -186,8 +202,8 @@ LTDB_2015_2019_sample <- LTDB_2015_2019_sample %>% rename(TRTID10 = tractid)
 install.packages("sf")
 library(sf)
 str(LTDB_2020)
-census_2020_shp <- st_read("data/nyct2010_24c/nyct2010.shp") 
-census_2020_shp <- census_2020_shp %>% rename(TRTID10 = CTIDFP00)
+census_2020_shp <- st_read("data/nyu_2451_34505/nyu_2451_34505.shp") 
+census_2020_shp <- census_2020_shp %>% rename(TRTID10 = tractid)
 census_2020_shp$TRTID10 <- as.numeric(census_2020_shp$TRTID10)
 
 # match census with 2020 to get only NY tracts 
@@ -206,12 +222,15 @@ tract_2020 <- LTDB_2020 %>%  rename(hinc = hinc19,
                                     ohu = hu19,
                                     wht = nhwt20,
                                     blk = nhblk20,
-                                    pop = pop20) %>%
+                                    pop = pop20, hs = hs19,
+                                    col = col19, 
+                                    unemp = unemp19, 
+                                    mrent = mrent19) %>%
   mutate(powner = owner/ohu,
          pwht = wht/pop,
          pblk = blk/pop) %>%
   select(TRTID10, hinc,
-         powner, pwht, pblk, pop) %>% st_drop_geometry() %>% 
+         powner, pwht, pblk, pop, hs, col, unemp, mrent) %>% st_drop_geometry() %>% 
   mutate(
     across(c(powner, pwht, pblk), 
            ~ ifelse(is.na(.), NA, paste0(sprintf("%.2f", . * 100))))
