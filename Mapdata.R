@@ -16,6 +16,7 @@ tract2010data <- population_data(census_2020_shp, tract_2010)
 tract2020data <- population_data(census_2020_shp, tract_2020)
 
 
+
 # Using source code plot_map to create pop map on mapview #### 
 mapview1970pop <- plot_pop_map(coops_maps, tract70data)
 mapview1980pop <- plot_pop_map(coops_maps, tract80data)
@@ -29,7 +30,8 @@ mapview1980blk <- plot_blk_map(coops_maps, tract80data)
 mapview1990blk <- plot_blk_map(coops_maps, tract90data)
 
 # Using source code plot_population_map to create tract pop maps on ggplot2 #### 
-
+#All the tracts that show up as gray mean that the tract70 did not have data for the tract in the 2010 shapefile 
+#Question: Should we change N/As to 0 so they show up as yellow on the map, or should we leave them as they are? 
 ggplot1970pop <- plot_population_map(census_data = census_2020_shp, 
                                       population_data = tract70data, 
                                       tract_data = coops_maps) 
@@ -49,11 +51,12 @@ ggplot2020pop <- plot_population_map(census_data = census_2020_shp,
                                      population_data = tract2020data,
                                      tract_data = coops_maps)  
 
- 
 #Combining the pop maps #### 
-pop_map_combined <- ggplot1970pop + ggplot1980pop 
+pop_map_combined <- ggplot1970pop + ggplot2020pop 
 
 pop_map <- ggplot1970pop + ggplot2020pop
+
+#turn variable into numeric 
 
 
 # Using source code for black percent on ggplot ####
@@ -66,4 +69,4 @@ ggplot2020blk <- plot_blk_map(census_2020_shp,tract2020data,coops_maps)
 
 
 
-blk_map_combined <- ggplot1970blk + ggplot1990blk
+blk_map_combined <- ggplot1970blk + ggplot2000blk
