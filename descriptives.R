@@ -41,7 +41,8 @@ coops.d <- coops %>%
 tracts.d <- tracts %>%
   filter(pop > 500) %>%
   group_by(year) %>%
-  summarize(hinc = mean(hinc20, na.rm = TRUE),
+  summarize(hinc2 = mean(hinc, na.rm = TRUE),
+            hinc = mean(hinc20, na.rm = TRUE),
             powner.m = mean(powner, na.rm = TRUE),
             pwht.m = mean(pwht, na.rm = TRUE),
             pblk.m = mean(pblk, na.rm = TRUE),
