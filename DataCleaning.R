@@ -13,7 +13,7 @@ extra_data <- filter(LTDB_1970,
 LTDB_1970 <- filter(extra_data, state == "NY")
 # Join sample and population 
 LTDB_1970 <- left_join(LTDB_1970, LTDB_1970_sample, by = 'TRTID10')
-colnames(LTDB_1970)
+colnames(LTDB_1970) 
 #create tract file 
 tract_70 <- LTDB_1970 %>%
   rename(
@@ -46,7 +46,7 @@ tract_70 <- LTDB_1970 %>%
     punemp = unemp / clf
   ) %>% mutate(year = "1970") %>%
   select(year,
-    TRTID10, hinc, powner, pwht, pblk, pop, punemp, mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up
+         TRTID10, hinc, powner, pwht, pblk, pop, punemp, mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up
   ) %>%
   mutate(
     across(-year, 
@@ -87,16 +87,32 @@ tract_80 <- LTDB_1980 %>%  rename(hinc = hinc80,
                                   pop = POP80, hs = hs80,
                                   col = col80, 
                                   unemp = unemp80, 
-                                  mrent = MRENT80) %>%
-  mutate(powner = owner/ohu,
-         pwht = wht/pop,
-         pblk = blk/pop) %>%
-  select(TRTID10, hinc,
-         powner, pwht, pblk, pop, hs, col, unemp, mrent) %>%
+                                  mrent = MRENT80,
+                                  clf = clf80,
+                                  str30old = h30old80,
+                                  hh10old = h10yrs80,
+                                  fhh = fhh80,
+                                  pov = npov80,
+                                  pfb = fb80,
+                                  pfb10 = n10imm80,
+                                  p18und = A18UND80,
+                                  p60up = A60UP80
+) %>%
   mutate(
-    across(c(powner, pwht, pblk), 
-           ~ ifelse(is.na(.), NA, paste0(sprintf("%.2f", . * 100))))
-  ) %>% mutate(year = "1980")
+    powner = owner / ohu,
+    pwht = wht / pop,
+    pblk = blk / pop, 
+    phs = hs / pop,
+    pcol = col / pop, 
+    punemp = unemp / clf
+  ) %>% mutate(year = "1980") %>%
+  select(year,
+         TRTID10, hinc, powner, pwht, pblk, pop, punemp, mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up
+  ) %>%
+  mutate(
+    across(-year, 
+           ~ ifelse(is.na(.), NA, sprintf("%.2f", as.numeric(.))))
+  )
 
 #1990
 #import data 
@@ -123,21 +139,38 @@ tract_90 <- LTDB_1990 %>%  rename(hinc = HINC90,
                                   pop = POP90, hs = HS90,
                                   col = COL90, 
                                   unemp = UNEMP90, 
-                                  mrent = MRENT90) %>% 
-  mutate(powner = owner/ohu,
-         pwht = wht/pop,
-         pblk = blk/pop) %>%
-  select(TRTID10, hinc,
-         powner, pwht, pblk, pop, hs, col, unemp, mrent) %>%
+                                  mrent = MRENT90, 
+                                  clf = CLF90,
+                                  str30old = H30OLD90,
+                                  hh10old = H10YRS90,
+                                  fhh = FHH90,
+                                  pov = NPOV90,
+                                  pfb = FB90,
+                                  pfb10 = N10IMM90,
+                                  p18und = A18UND90,
+                                  p60up = A60UP90
+) %>%
   mutate(
-    across(c(powner, pwht, pblk), 
-           ~ ifelse(is.na(.), NA, paste0(sprintf("%.2f", . * 100))))
-  ) %>% mutate(year = "1990")
+    powner = owner / ohu,
+    pwht = wht / pop,
+    pblk = blk / pop, 
+    phs = hs / pop,
+    pcol = col / pop, 
+    punemp = unemp / clf
+  ) %>% mutate(year = "1990") %>%
+  select(year,
+         TRTID10, hinc, powner, pwht, pblk, pop, punemp, mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up
+  ) %>%
+  mutate(
+    across(-year, 
+           ~ ifelse(is.na(.), NA, sprintf("%.2f", as.numeric(.))))
+  )
 
 #2000
 #import data from LTDB 
 LTDB_2000 <- read.csv("data/ltdb_std_all_fullcount/LTDB_Std_2000_fullcount.csv")
 LTDB_2000_sample <- read.csv("data/ltdb_std_all_sample/ltdb_std_2000_sample.csv")
+
 
 #Filter data for NY only 
 extra_data <- filter(LTDB_2000, 
@@ -146,29 +179,48 @@ extra_data <- filter(LTDB_2000,
 
 LTDB_2000 <- filter(extra_data, state == "NY")
 
+
 #join sample and population 
 LTDB_2000 <- left_join(LTDB_2000, LTDB_2000_sample, by = 'TRTID10')
 colnames(LTDB_2000)
 
 #create tract file 
-tract_2000 <- LTDB_2000 %>%  rename(hinc = HINC00.y,
+tract_2000 <- LTDB_2000 %>%  rename(hinc = HINC00,
                                     owner = OWN00,
                                     ohu = HU00,
                                     wht = NHWHT00,
                                     blk = NHBLK00,
-                                    pop = POP00, hs = HS00.y,
-                                    col = COL00.y, 
-                                    unemp = UNEMP00.y, 
-                                    mrent = MRENT00.y) %>%
-  mutate(powner = owner/ohu,
-         pwht = wht/pop,
-         pblk = blk/pop) %>%
-  select(TRTID10, hinc,
-         powner, pwht, pblk, pop, hs, col, unemp, mrent) %>%
+                                    pop = POP00,
+                                    hs = HS00,
+                                    col = COL00, 
+                                    unemp = UNEMP00, 
+                                    mrent = MRENT00,
+                                    clf = CLF00,
+                                    str30old = H30OLD00,
+                                    hh10old = H10YRS00,
+                                    fhh = FHH00,
+                                    pov = NPOV00,
+                                    pfb = FB00,
+                                    pfb10 = N10IMM00,
+                                    p18und = A18UND00,
+                                    p60up = A60UP00
+) %>%
   mutate(
-    across(c(powner, pwht, pblk), 
-           ~ ifelse(is.na(.), NA, paste0(sprintf("%.2f", . * 100))))
-  ) %>% mutate(year = "2000")
+    powner = owner / ohu,
+    pwht = wht / pop,
+    pblk = blk / pop, 
+    phs = hs / pop,
+    pcol = col / pop, 
+    punemp = unemp / clf
+  ) %>% mutate(year = "2000") %>%
+  select(year,
+         TRTID10, hinc, powner, pwht, pblk, pop, punemp, mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up
+  ) %>%
+  mutate(
+    across(-year, 
+           ~ ifelse(is.na(.), NA, sprintf("%.2f", as.numeric(.))))
+  )
+
 #2010
 #import data 
 LTDB_2010 <- read.csv("data/ltdb_std_all_fullcount/LTDB_Std_2010_fullcount.csv")
@@ -188,26 +240,43 @@ LTDB_2008_2012_sample <- LTDB_2008_2012_sample %>% rename(TRTID10 = tractid)
 #join sample and population
 LTDB_2010 <- left_join(LTDB_2010, LTDB_2008_2012_sample, by = 'TRTID10')
 colnames(LTDB_2010)
-
 #create tract file 
 tract_2010 <- LTDB_2010 %>%  rename(hinc = hinc12,
                                     owner = own10,
                                     ohu = hu10,
                                     wht = nhwht10,
                                     blk = nhblk10,
-                                    pop = pop10, hs = hs12,
+                                    pop = pop10,
+                                    hs = hs12,
                                     col = col12, 
                                     unemp = unemp12, 
-                                    mrent = mrent12) %>%
-  mutate(powner = owner/ohu,
-         pwht = wht/pop,
-         pblk = blk/pop) %>%
-  select(TRTID10, hinc,
-         powner, pwht, pblk, pop, hs, col, unemp, mrent) %>%
+                                    mrent = mrent12, 
+                                    clf = clf12,
+                                    str30old = h30old12,
+                                    hh10old = h10yrs12,
+                                    fhh = fhh10,
+                                    pov = npov12,
+                                    pfb = pfb12,
+                                    pfb10 = n10imm12,
+                                    p18und = a18und10,
+                                    p60up = a60up10
+) %>%
   mutate(
-    across(c(powner, pwht, pblk), 
-           ~ ifelse(is.na(.), NA, paste0(sprintf("%.2f", . * 100))))
-  ) %>% mutate(year = "2010")
+    powner = owner / ohu,
+    pwht = wht / pop,
+    pblk = blk / pop, 
+    phs = hs / pop,
+    pcol = col / pop, 
+    punemp = unemp / clf
+  ) %>% mutate(year = "2010") %>%
+  select(year,
+         TRTID10, hinc, powner, pwht, pblk, pop, punemp, mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up
+  ) %>%
+  mutate(
+    across(-year, 
+           ~ ifelse(is.na(.), NA, sprintf("%.2f", as.numeric(.))))
+  )
+
 
 #2020
 #import data from LTDB
@@ -245,16 +314,33 @@ tract_2020 <- LTDB_2020 %>%  rename(hinc = hinc19,
                                     pop = pop20, hs = hs19,
                                     col = col19, 
                                     unemp = unemp19, 
-                                    mrent = mrent19) %>%
-  mutate(powner = owner/ohu,
-         pwht = wht/pop,
-         pblk = blk/pop) %>%
-  select(TRTID10, hinc,
-         powner, pwht, pblk, pop, hs, col, unemp, mrent) %>% st_drop_geometry() %>% 
+                                    mrent = mrent19, 
+                                    clf = clf19,
+                                    str30old = h30old19,
+                                    hh10old = h10yrs19,
+                                    fhh = fhh19,
+                                    pov = npov19,
+                                    pfb = pfb19,
+                                    pfb10 = n10imm19,
+                                    p18und = a18und19,
+                                    p60up = a60up19
+) %>%
   mutate(
-    across(c(powner, pwht, pblk), 
-           ~ ifelse(is.na(.), NA, paste0(sprintf("%.2f", . * 100))))
-  ) %>% mutate(year = "2020")
+    powner = owner / ohu,
+    pwht = wht / pop,
+    pblk = blk / pop, 
+    phs = hs / pop,
+    pcol = col / pop, 
+    punemp = unemp / clf
+  ) %>% mutate(year = "2020") %>%
+  st_drop_geometry() %>%
+  select(year,
+         TRTID10, hinc, powner, pwht, pblk, pop, punemp, mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, p18und, p60up
+  ) %>%
+  mutate(
+    across(-year, 
+           ~ ifelse(is.na(.), NA, sprintf("%.2f", as.numeric(.))))
+  )
 
 # combining all years
 tract <- bind_rows(tract_70, tract_80, tract_90, tract_2000, tract_2010, tract_2020) %>% group_by(year)%>% select(year, everything()) %>% group_by(year) %>%
