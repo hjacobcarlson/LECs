@@ -30,8 +30,7 @@ mapview1980blk <- plot_blk_map(coops_maps, tract80data)
 mapview1990blk <- plot_blk_map(coops_maps, tract90data)
 
 # Using source code plot_population_map to create tract pop maps on ggplot2 #### 
-#All the tracts that show up as gray mean that the tract70 did not have data for the tract in the 2010 shapefile 
-#Question: Should we change N/As to 0 so they show up as yellow on the map, or should we leave them as they are? 
+
 ggplot1970pop <- plot_population_map(census_data = census_2020_shp, 
                                       population_data = tract70data, 
                                       tract_data = coops_maps) 
@@ -56,17 +55,22 @@ pop_map_combined <- ggplot1970pop + ggplot2020pop
 
 pop_map <- ggplot1970pop + ggplot2020pop
 
-#turn variable into numeric 
 
 
 # Using source code for black percent on ggplot ####
-ggplot1970blk <- plot_blk_map(census_2020_shp,tract70data, coops_maps)
-ggplot1980blk <- plot_blk_map(census_2020_shp,tract80data,coops_maps)
-ggplot1990blk <- plot_blk_map(census_2020_shp,tract90data,coops_maps)
-ggplot2000blk <- plot_blk_map(census_2020_shp,tract2000data,coops_maps)
-ggplot2010blk <- plot_blk_map(census_2020_shp,tract2010data,coops_maps)
-ggplot2020blk <- plot_blk_map(census_2020_shp,tract2020data,coops_maps)
+ggplot1970blk <- plot_race_map(census_2020_shp, tract70data, coops_maps, "pblk")
+ggplot1980blk <- plot_race_map(census_2020_shp, tract70data, coops_maps, "pblk")
 
 
+# Using source code for white percent on ggplot ####
 
-blk_map_combined <- ggplot1970blk + ggplot2000blk
+ggplot1970wht <- plot_race_map(census_2020_shp, tract70data, coops_maps, "pwht")
+
+
+# Using source code for unemployment percent ####
+ggplot1970unemp <- plot_unemp(census_2020_shp, tract70data, coops_maps, "punemp")
+ggplot2010unemp <- plot_unemp(census_2020_shp, tract2010data, coops_maps, "punemp")
+
+library(gridExtra)
+grid.arrange(ggplot1970blk2, blkmap, ncol = 2)
+

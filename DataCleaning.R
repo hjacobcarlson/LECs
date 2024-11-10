@@ -297,8 +297,8 @@ census_2020_shp$TRTID10 <- as.numeric(census_2020_shp$TRTID10)
 
 # match census with 2020 to get only NY tracts 
 LTDB_2020_with_shp <- left_join(census_2020_shp, LTDB_2020, by = "TRTID10")  
-LTDB_2020 <- LTDB_2020_with_shp %>% select(-CTLabel,-BoroCode,-BoroName, -BoroCT2020,-CDEligibil,-NTAName, -NTA2020, -CDTA2020,-CDTANAME, -PUMA, -Shape_Leng, -Shape_Area, -geometry, -CT2020 )
-LTDB_2020 <- LTDB_2020 %>% select(-geometry)
+LTDB_2020 <- LTDB_2020_with_shp %>% select(-tractnum, -name, -namelsad, -nta, -nta_name, -bcode)
+                                           
 colnames(LTDB_2015_2019_sample)
 
 #join sample and population 
@@ -357,19 +357,24 @@ coops_shp <- st_transform(coops_shp, st_crs(census_2020_shp))
 # combine co-op addresses with their tracts 
 library(sf)
 coop_tract_intersect <- st_intersection(census_2020_shp, coops_shp) %>%
-  as_tibble() %>%
-  select(-CDEligibil)  
+  as_tibble()
 
+tract$TRTID10 <- as.numeric(tract$TRTID10)
 #combine tract data from LTDB with co-op tracts 
-coops7020 <- left_join(coop_tract_intersect, tract, by = "TRTID10") %>% select(-geometry, -CTLabel, -CT2020, -BoroCT2020, -NTA2020, -CDTA2020, -PUMA, -Shape_Leng, -Shape_Area)
+coops7020 <- left_join(coop_tract_intersect, tract, by = "TRTID10", relationship = "many-to-many") %>% select(-geometry, -tractnum, -name, -namelsad, -nta, -nta_name, -bcode)
 
 
 library(writexl)
 
 
 
-# Export to Excel
+# Export to CSV
 
-write_xlsx(coops7020, "coops7020.xlsx")
+write.csv(coops7020, "coops7020.csv") 
+# Making variables Numeric for all tracts ####
 
-
+tract70data <- tract70data %>%
+  mutate(across(
+    .cols = -geometry, # Exclude column 'd'
+    .fns = ~ as.numeric(as.character(.)) # Apply numeric conversion
+  ))

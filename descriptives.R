@@ -18,7 +18,7 @@ cdf$year <- sapply(cdf$LastDayOfYear, FUN=function(x) as.numeric(substr(x, 1, 4)
 
 # Read in Data ####
 # Coops
-coops <- read_csv("data/coops7020 2 (1).csv") %>%
+coops <- read_csv("data/coops7020.csv") %>%
   left_join(cdf, by = "year") %>%
   mutate(hinc20 = hinc * CPIAUCSL)
 
@@ -35,7 +35,11 @@ coops.d <- coops %>%
             powner.m = mean(powner, na.rm = TRUE),
             pwht.m = mean(pwht, na.rm = TRUE),
             pblk.m = mean(pblk, na.rm = TRUE),
-            pop.m = mean(pop, na.rm = TRUE)) %>%
+            pop.m = mean(pop, na.rm = TRUE), 
+            unemp.m = mean(punemp, na.rm = TRUE),
+            mrent = mean(mrent, na.rm = TRUE),
+            pcol.m = mean(pcol, na.rm = TRUE),
+            phs.m = mean(phs, na.rm = TRUE)) %>%
   mutate(geog = "Coops")
 
 tracts.d <- tracts %>%
@@ -46,7 +50,11 @@ tracts.d <- tracts %>%
             powner.m = mean(powner, na.rm = TRUE),
             pwht.m = mean(pwht, na.rm = TRUE),
             pblk.m = mean(pblk, na.rm = TRUE),
-            pop.m = mean(pop, na.rm = TRUE)) %>%
+            pop.m = mean(pop, na.rm = TRUE),
+            unemp.m = mean(punemp, na.rm = TRUE),
+            mrent = mean(mrent, na.rm = TRUE),
+            pcol.m = mean(pcol, na.rm = TRUE),
+            phs.m = mean(phs, na.rm = TRUE)) %>%
   mutate(geog = "City")
 
 
