@@ -366,15 +366,26 @@ coops7020 <- left_join(coop_tract_intersect, tract, by = "TRTID10", relationship
 
 library(writexl)
 
+# Making all columns numeric ####
+tract_70 <- tract_70 %>%
+  mutate(across(everything(), as.numeric))
 
 
-# Export to CSV
+tract_80 <- tract_80 %>%
+  mutate(across(everything(), as.numeric))
 
-write.csv(coops7020, "coops7020.csv") 
-# Making variables Numeric for all tracts ####
+tract_90 <- tract_90 %>%
+  mutate(across(everything(), as.numeric))
 
-tract70data <- tract70data %>%
-  mutate(across(
-    .cols = -geometry, # Exclude column 'd'
-    .fns = ~ as.numeric(as.character(.)) # Apply numeric conversion
-  ))
+tract_2000 <- tract_2000 %>%
+  mutate(across(everything(), as.numeric))
+
+tract_2010 <- tract_2010 %>%
+  mutate(across(everything(), as.numeric))
+
+tract_2020 <- tract_2020 %>%
+  mutate(across(everything(), as.numeric))
+
+
+mean(tract_2000$pop) 
+max(tract_2000$pop)

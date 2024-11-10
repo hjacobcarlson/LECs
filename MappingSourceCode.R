@@ -8,7 +8,7 @@ plot_population_map <- function(census_data, population_data, tract_data, title 
     geom_sf(data = population_data, aes(fill = pop)) +  
     
     # Use a viridis color scale for the population data, setting limits
-    scale_fill_viridis_c(option = "C", limits = c(0, 20000), 
+    scale_fill_viridis_c(option = "C", limits = c(0, 10000), 
                          direction = -1,
                          name = "Population") +  
     
@@ -29,7 +29,7 @@ plot_population_map <- function(census_data, population_data, tract_data, title 
 population_data <- function(census_data, population_data) {
   left_join(census_data, population_data)
 }
- 
+library(dplyr)
 
 
 library(mapview)
@@ -47,7 +47,7 @@ plot_pop_map <- function(data, popdata) {
                        zcol = "pop", 
                        layer.name = "Population",
                        popup = popupTable(popdata, zcol = c("pop", "TRTID10")),
-                       zlim = c(0, 20000),  # Set limits for the color scale
+                       zlim = c(0, 10000),  # Set limits for the color scale
                        legend.title = "Population")  # Optional: Set legend title
   
   # Combine both maps into one view
@@ -67,10 +67,10 @@ plot_blk_mapview <- function(data, racedata) {
   # Create the map for tract data
   tract_map <- mapview(racedata, 
                        legend = TRUE, 
-                       zcol = "pop", 
+                       zcol = "pblk", 
                        layer.name = "Percent by Black",
                        popup = popupTable(racedata, zcol = c("pblk", "TRTID10")),
-                       zlim = c(0, 100),  # Set limits for the color scale
+                       zlim = c(0, 1),  # Set limits for the color scale
                        legend.title = "Percent by Black")  # Optional: Set legend title
   
   # Combine both maps into one view
