@@ -32,6 +32,7 @@ coops.d <- coops %>%
   filter(pop > 500) %>%
   group_by(year) %>%
   summarize(hinc = mean(hinc20, na.rm = TRUE),
+            hinc2 = mean(hinc20, na.rm = TRUE),
             powner.m = mean(powner, na.rm = TRUE),
             pwht.m = mean(pwht, na.rm = TRUE),
             pblk.m = mean(pblk, na.rm = TRUE),
@@ -40,14 +41,14 @@ coops.d <- coops %>%
             mrent = mean(mrent, na.rm = TRUE),
             pcol.m = mean(pcol, na.rm = TRUE),
             phs.m = mean(phs, na.rm = TRUE),
-            pstr30.m = mean(str30old, na.rm = TRUE),
-            phh10old.m = mean(hh10old, na.rm = TRUE),
-            pfhh.m = mean(fhh, na.rm = TRUE),
-            ppov.m = mean(pov, na.rm = TRUE),
-            pfb.m = mean(pfb, na.rm = TRUE),
-            pfb10.m = mean(pfb10, na.rm = TRUE),
-            p18und.m = mean(p18und, na.rm = TRUE),
-            p60up.m = mean(p60up, na.rm = TRUE)) %>%
+            str30.m = mean(str30old, na.rm = TRUE),
+            hh10old.m = mean(hh10old, na.rm = TRUE),
+            fhh.m = mean(fhh, na.rm = TRUE),
+            pov.m = mean(pov, na.rm = TRUE),
+            fb.m = mean(pfb, na.rm = TRUE),
+            fb10.m = mean(pfb10, na.rm = TRUE),
+            n18und.m = mean(p18und, na.rm = TRUE),
+            n60up.m = mean(p60up, na.rm = TRUE)) %>%
   mutate(geog = "Coops")
 
 tracts.d <- tracts %>%
@@ -63,20 +64,20 @@ tracts.d <- tracts %>%
             mrent = mean(mrent, na.rm = TRUE),
             pcol.m = mean(pcol, na.rm = TRUE),
             phs.m = mean(phs, na.rm = TRUE),
-            pstr30.m = mean(str30old, na.rm = TRUE),
-            phh10old.m = mean(hh10old, na.rm = TRUE),
-            pfhh.m = mean(fhh, na.rm = TRUE),
-            ppov.m = mean(pov, na.rm = TRUE),
-            pfb.m = mean(pfb, na.rm = TRUE),
-            pfb10.m = mean(pfb10, na.rm = TRUE),
-            p18und.m = mean(p18und, na.rm = TRUE),
-            p60up.m = mean(p60up, na.rm = TRUE)) %>%
+            str30.m = mean(str30old, na.rm = TRUE),
+            hh10old.m = mean(hh10old, na.rm = TRUE),
+            fhh.m = mean(fhh, na.rm = TRUE),
+            pov.m = mean(pov, na.rm = TRUE),
+            fb.m = mean(pfb, na.rm = TRUE),
+            fb10.m = mean(pfb10, na.rm = TRUE),
+            n18und.m = mean(p18und, na.rm = TRUE),
+            n60up.m = mean(p60up, na.rm = TRUE)) %>%
   mutate(geog = "City")
 
 
+combined <- bind_rows(tracts.d, coops.d) %>% 
+  pivot_longer(c(contains(".m"), hinc, hinc2, mrent), names_to = "var", values_to = "percent")
 
-combined <- bind_rows(tracts.d, coops.d) %>%
-  pivot_longer(c(contains("p"), hinc), names_to = "var", values_to = "percent")
 
 # GRAPHS ####
 
@@ -88,6 +89,7 @@ p <- combined %>%
   geom_line(aes(color = geog)) +
   facet_wrap(~var, scales = "free") +
   theme_minimal()
+
 p
 
 
@@ -95,3 +97,5 @@ boro <- coops %>%
   group_by(BoroName) %>%
   summarize(n = n())
 
+
+mean(tract_2010$pfb)

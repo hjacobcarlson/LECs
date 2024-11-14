@@ -1,11 +1,9 @@
 # Population map ####
 
-plot_population_map <- function(census_data, population_data, tract_data, title = "Population by Region") {
+plot_population_map <- function(population_data, coops, title = "Population by Region") {
   
-  ggplot() + 
-    # First layer: Plot the census tract shapefile with borders only (no fill)
-    geom_sf(data = census_data, fill = NA, color = "black", size = 0.3) +
-    
+  ggplot() +  
+  
     # Second layer: Plot the population data
     geom_sf(data = population_data, aes(fill = pop)) +  
     
@@ -19,12 +17,13 @@ plot_population_map <- function(census_data, population_data, tract_data, title 
     
     # Add labels for the title and legend
     labs(title = title) +
+    geom_sf(data = coops, color = "black", size = 0.5, na.rm = TRUE) + 
     
-    # Third layer: Add tract boundaries (if needed)
-    geom_sf(data = tract_data, color = "white", size = 0.5) +  # White borders
-    
-    # Apply minimal theme again
-    theme_minimal()
+
+    theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(),
+          axis.text.y = element_blank(), axis.ticks.y = element_blank(),
+          axis.line = element_blank(),
+          panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 }
 
 # population data function ####
@@ -100,7 +99,10 @@ plot_race_map <- function(census_data, population_data, tract_data, race_var, ti
     geom_sf(data = tract_data, color = "white", size = 0.5, na.rm = TRUE) +  # White borders
     
     # Apply minimal theme again
-    theme_minimal()
+    theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(),
+          axis.text.y = element_blank(), axis.ticks.y = element_blank(),
+          axis.line = element_blank(),
+          panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 }
 
 
@@ -122,13 +124,13 @@ plot_unemp <- function(census_data, population_data, tract_data, unemp_var, titl
   
   ggplot() + 
     # Plot the census tract shapefile with borders only (no fill)
-    geom_sf(data = census_data, fill = NA, color = "black", size = 0.3) +
+    geom_sf(data = census_data, fill = NA, color = "black", size = 0.01) +
     
     # Plot the population data using the specified race variable, ignoring NA values
     geom_sf(data = population_data, aes(fill = !!sym(unemp_var)), na.rm = TRUE) +  
     
     # Use a viridis color scale for the population data, setting limits based on data range
-    scale_fill_viridis_c(option = "C", limits = c(0, 1),
+    scale_fill_viridis_c(option = "C", limits = c(0, 0.50),
                          direction = -1,
                          name = paste("Unemployment"),
                          na.value = "gray") +  # Set NA values to gray (or any color you prefer)
@@ -142,8 +144,12 @@ plot_unemp <- function(census_data, population_data, tract_data, unemp_var, titl
     # Add tract boundaries (if needed)
     geom_sf(data = tract_data, color = "white", size = 0.5, na.rm = TRUE) +  # White borders
     
+    
     # Apply minimal theme again
-    theme_minimal()
+    theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(),
+          axis.text.y = element_blank(), axis.ticks.y = element_blank(),
+          axis.line = element_blank(),
+          panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 }
 
 # College map ####
@@ -185,5 +191,8 @@ plot_col <- function(census_data, population_data, tract_data, col_var, title = 
     geom_sf(data = tract_data, color = "white", size = 0.5, na.rm = TRUE) +  # White borders
     
     # Apply minimal theme again
-    theme_minimal()
+    theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(),
+          axis.text.y = element_blank(), axis.ticks.y = element_blank(),
+          axis.line = element_blank(),
+          panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 }

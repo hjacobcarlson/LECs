@@ -44,7 +44,7 @@ tract_70 <- LTDB_1970 %>%
     phs = hs / pop,
     pcol = col / pop, 
     punemp = unemp / clf
-  ) %>% mutate(year = "1970") %>%
+  ) %>% mutate(year = "1970") %>% filter(pop > 100) %>%
   select(year,
          TRTID10, hinc, powner, pwht, pblk, pop, punemp, mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up
   ) %>%
@@ -105,7 +105,7 @@ tract_80 <- LTDB_1980 %>%  rename(hinc = hinc80,
     phs = hs / pop,
     pcol = col / pop, 
     punemp = unemp / clf
-  ) %>% mutate(year = "1980") %>%
+  ) %>% mutate(year = "1980") %>% filter(pop > 100) %>%
   select(year,
          TRTID10, hinc, powner, pwht, pblk, pop, punemp, mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up
   ) %>%
@@ -157,7 +157,7 @@ tract_90 <- LTDB_1990 %>%  rename(hinc = HINC90,
     phs = hs / pop,
     pcol = col / pop, 
     punemp = unemp / clf
-  ) %>% mutate(year = "1990") %>%
+  ) %>% mutate(year = "1990") %>% filter(pop > 100) %>%
   select(year,
          TRTID10, hinc, powner, pwht, pblk, pop, punemp, mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up
   ) %>%
@@ -212,7 +212,7 @@ tract_2000 <- LTDB_2000 %>%  rename(hinc = HINC00,
     phs = hs / pop,
     pcol = col / pop, 
     punemp = unemp / clf
-  ) %>% mutate(year = "2000") %>%
+  ) %>% mutate(year = "2000") %>% filter(pop > 100) %>%
   select(year,
          TRTID10, hinc, powner, pwht, pblk, pop, punemp, mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up
   ) %>%
@@ -268,7 +268,7 @@ tract_2010 <- LTDB_2010 %>%  rename(hinc = hinc12,
     phs = hs / pop,
     pcol = col / pop, 
     punemp = unemp / clf
-  ) %>% mutate(year = "2010") %>%
+  ) %>% mutate(year = "2010") %>% filter(pop > 100) %>%
   select(year,
          TRTID10, hinc, powner, pwht, pblk, pop, punemp, mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up
   ) %>%
@@ -333,15 +333,15 @@ tract_2020 <- LTDB_2020 %>%  rename(hinc = hinc19,
     pcol = col / pop, 
     punemp = unemp / clf
   ) %>% mutate(year = "2020") %>%
-  st_drop_geometry() %>%
+  st_drop_geometry() %>% 
+  filter(pop > 100) %>%
   select(year,
-         TRTID10, hinc, powner, pwht, pblk, pop, punemp, mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, p18und, p60up
+         TRTID10, hinc, powner, pwht, pblk, pop, punemp, mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up
   ) %>%
   mutate(
     across(-year, 
            ~ ifelse(is.na(.), NA, sprintf("%.2f", as.numeric(.))))
   )
-
 # combining all years
 tract <- bind_rows(tract_70, tract_80, tract_90, tract_2000, tract_2010, tract_2020) %>% group_by(year)%>% select(year, everything()) %>% group_by(year) %>%
   distinct() 
@@ -362,7 +362,6 @@ coop_tract_intersect <- st_intersection(census_2020_shp, coops_shp) %>%
 tract$TRTID10 <- as.numeric(tract$TRTID10)
 #combine tract data from LTDB with co-op tracts 
 coops7020 <- left_join(coop_tract_intersect, tract, by = "TRTID10", relationship = "many-to-many") %>% select(-geometry, -tractnum, -name, -namelsad, -nta, -nta_name, -bcode)
-
 
 library(writexl)
 
@@ -385,4 +384,10 @@ tract_2010 <- tract_2010 %>%
 
 tract_2020 <- tract_2020 %>%
   mutate(across(everything(), as.numeric))
+
+
+
+
+
+
 

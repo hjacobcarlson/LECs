@@ -35,9 +35,7 @@ mapview2010blk <- plot_blk_mapview(coops_maps, tract2010data)
 mapview2020blk <- plot_blk_mapview(coops_maps, tract2020data)
 # Using source code plot_population_map to create tract pop maps on ggplot2 #### 
 
-ggplot1970pop <- plot_population_map(census_data = census_2020_shp, 
-                                      population_data = tract70data, 
-                                      tract_data = coops_maps) 
+ggplot1970pop <- plot_population_map( tract70data, coops_maps)
 ggplot1980pop <- plot_population_map(census_data = census_2020_shp, 
                                         population_data = tract80data,
                                         tract_data = coops_maps)  
