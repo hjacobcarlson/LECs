@@ -73,12 +73,24 @@ ggplot2020blk <- plot_race_map(census_2020_shp, tract2020data, coops_maps, "pblk
 # Using source code for white percent on ggplot ####
 
 ggplot1970wht <- plot_race_map(census_2020_shp, tract70data, coops_maps, "pwht")
+ggplot1980wht <- plot_race_map(census_2020_shp, tract80data, coops_maps, "pwht")
+ggplot1990wht <- plot_race_map(census_2020_shp, tract90data, coops_maps, "pwht")
+ggplot2000wht <- plot_race_map(census_2020_shp, tract2000data, coops_maps, "pwht")
+ggplot2010wht <- plot_race_map(census_2020_shp, tract2010data, coops_maps, "pwht")
+ggplot2020wht <- plot_race_map(census_2020_shp, tract2020data, coops_maps, "pwht")
 
 
 # Using source code for unemployment percent ####
 ggplot1970unemp <- plot_unemp(census_2020_shp, tract70data, coops_maps, "punemp")
+ggplot1980unemp <- plot_unemp(census_2020_shp, tract80data, coops_maps, "punemp")
+ggplot1990unemp <- plot_unemp(census_2020_shp, tract90data, coops_maps, "punemp")
+ggplot2000unemp <- plot_unemp(census_2020_shp, tract2000data, coops_maps, "punemp")
 ggplot2010unemp <- plot_unemp(census_2020_shp, tract2010data, coops_maps, "punemp")
+ggplot2020unemp <- plot_unemp(census_2020_shp, tract2020data, coops_maps, "punemp")
 
+# Using source code for college graduates percent ####
+
+# Using source code for 
 library(gridExtra)
-grid.arrange(ggplot1970blk2, blkmap, ncol = 2)
+grid.arrange(ggplot1970blk, ggplot1980blk, ncol = 2)
 

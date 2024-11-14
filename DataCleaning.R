@@ -386,6 +386,3 @@ tract_2010 <- tract_2010 %>%
 tract_2020 <- tract_2020 %>%
   mutate(across(everything(), as.numeric))
 
-
-mean(tract_2000$pop) 
-max(tract_2000$pop)

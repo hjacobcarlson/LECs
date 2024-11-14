@@ -39,7 +39,15 @@ coops.d <- coops %>%
             unemp.m = mean(punemp, na.rm = TRUE),
             mrent = mean(mrent, na.rm = TRUE),
             pcol.m = mean(pcol, na.rm = TRUE),
-            phs.m = mean(phs, na.rm = TRUE)) %>%
+            phs.m = mean(phs, na.rm = TRUE),
+            pstr30.m = mean(str30old, na.rm = TRUE),
+            phh10old.m = mean(hh10old, na.rm = TRUE),
+            pfhh.m = mean(fhh, na.rm = TRUE),
+            ppov.m = mean(pov, na.rm = TRUE),
+            pfb.m = mean(pfb, na.rm = TRUE),
+            pfb10.m = mean(pfb10, na.rm = TRUE),
+            p18und.m = mean(p18und, na.rm = TRUE),
+            p60up.m = mean(p60up, na.rm = TRUE)) %>%
   mutate(geog = "Coops")
 
 tracts.d <- tracts %>%
@@ -54,7 +62,15 @@ tracts.d <- tracts %>%
             unemp.m = mean(punemp, na.rm = TRUE),
             mrent = mean(mrent, na.rm = TRUE),
             pcol.m = mean(pcol, na.rm = TRUE),
-            phs.m = mean(phs, na.rm = TRUE)) %>%
+            phs.m = mean(phs, na.rm = TRUE),
+            pstr30.m = mean(str30old, na.rm = TRUE),
+            phh10old.m = mean(hh10old, na.rm = TRUE),
+            pfhh.m = mean(fhh, na.rm = TRUE),
+            ppov.m = mean(pov, na.rm = TRUE),
+            pfb.m = mean(pfb, na.rm = TRUE),
+            pfb10.m = mean(pfb10, na.rm = TRUE),
+            p18und.m = mean(p18und, na.rm = TRUE),
+            p60up.m = mean(p60up, na.rm = TRUE)) %>%
   mutate(geog = "City")
 
 
