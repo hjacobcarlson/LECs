@@ -19,6 +19,7 @@ tract_70 <- LTDB_1970 %>%
   rename(
     hinc = HINC70,
     owner = OWN70,
+    rent = RENT70,
     ohu = OHU70,
     wht = WHITE70,
     blk = BLACK70,
@@ -39,6 +40,7 @@ tract_70 <- LTDB_1970 %>%
   ) %>%
   mutate(
     powner = owner / ohu,
+    prent = rent / ohu,
     pwht = wht / pop,
     pblk = blk / pop, 
     phs = hs / pop,
@@ -46,7 +48,7 @@ tract_70 <- LTDB_1970 %>%
     punemp = unemp / clf
   ) %>% mutate(year = "1970") %>% filter(pop > 100) %>%
   select(year,
-         TRTID10, hinc, powner, pwht, pblk, pop, punemp, mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up
+         TRTID10, hinc, prent, powner, pwht, pblk, pop, punemp, mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up
   ) %>%
   mutate(
     across(-year, 
@@ -81,6 +83,7 @@ colnames(LTDB_1980)
 
 tract_80 <- LTDB_1980 %>%  rename(hinc = hinc80,
                                   owner = OWN80,
+                                  rent = RENT80,
                                   ohu = OHU80,
                                   wht = NHWHT80,
                                   blk = NHBLK80,
@@ -100,6 +103,7 @@ tract_80 <- LTDB_1980 %>%  rename(hinc = hinc80,
 ) %>%
   mutate(
     powner = owner / ohu,
+    prent = rent / ohu, 
     pwht = wht / pop,
     pblk = blk / pop, 
     phs = hs / pop,
@@ -107,7 +111,7 @@ tract_80 <- LTDB_1980 %>%  rename(hinc = hinc80,
     punemp = unemp / clf
   ) %>% mutate(year = "1980") %>% filter(pop > 100) %>%
   select(year,
-         TRTID10, hinc, powner, pwht, pblk, pop, punemp, mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up
+         TRTID10, hinc, powner, prent, pwht, pblk, pop, punemp, mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up
   ) %>%
   mutate(
     across(-year, 
@@ -133,6 +137,7 @@ colnames(LTDB_1990)
 #create tract file 
 tract_90 <- LTDB_1990 %>%  rename(hinc = HINC90,
                                   owner = OWN90,
+                                  rent = RENT90,
                                   ohu = OHU90,
                                   wht = NHWHT90,
                                   blk = NHBLK90,
@@ -152,6 +157,7 @@ tract_90 <- LTDB_1990 %>%  rename(hinc = HINC90,
 ) %>%
   mutate(
     powner = owner / ohu,
+    prent = rent / ohu,
     pwht = wht / pop,
     pblk = blk / pop, 
     phs = hs / pop,
@@ -159,7 +165,7 @@ tract_90 <- LTDB_1990 %>%  rename(hinc = HINC90,
     punemp = unemp / clf
   ) %>% mutate(year = "1990") %>% filter(pop > 100) %>%
   select(year,
-         TRTID10, hinc, powner, pwht, pblk, pop, punemp, mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up
+         TRTID10, hinc, powner, prent, pwht, pblk, pop, punemp, mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up
   ) %>%
   mutate(
     across(-year, 
@@ -187,6 +193,7 @@ colnames(LTDB_2000)
 #create tract file 
 tract_2000 <- LTDB_2000 %>%  rename(hinc = HINC00,
                                     owner = OWN00,
+                                    rent = RENT00, 
                                     ohu = HU00,
                                     wht = NHWHT00,
                                     blk = NHBLK00,
@@ -207,6 +214,7 @@ tract_2000 <- LTDB_2000 %>%  rename(hinc = HINC00,
 ) %>%
   mutate(
     powner = owner / ohu,
+    prent = rent / ohu,
     pwht = wht / pop,
     pblk = blk / pop, 
     phs = hs / pop,
@@ -214,7 +222,7 @@ tract_2000 <- LTDB_2000 %>%  rename(hinc = HINC00,
     punemp = unemp / clf
   ) %>% mutate(year = "2000") %>% filter(pop > 100) %>%
   select(year,
-         TRTID10, hinc, powner, pwht, pblk, pop, punemp, mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up
+         TRTID10, hinc, powner, prent, pwht, pblk, pop, punemp, mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up
   ) %>%
   mutate(
     across(-year, 
@@ -243,6 +251,7 @@ colnames(LTDB_2010)
 #create tract file 
 tract_2010 <- LTDB_2010 %>%  rename(hinc = hinc12,
                                     owner = own10,
+                                    rent = rent10,
                                     ohu = hu10,
                                     wht = nhwht10,
                                     blk = nhblk10,
@@ -263,6 +272,7 @@ tract_2010 <- LTDB_2010 %>%  rename(hinc = hinc12,
 ) %>%
   mutate(
     powner = owner / ohu,
+    prent = rent / ohu,
     pwht = wht / pop,
     pblk = blk / pop, 
     phs = hs / pop,
@@ -270,7 +280,7 @@ tract_2010 <- LTDB_2010 %>%  rename(hinc = hinc12,
     punemp = unemp / clf
   ) %>% mutate(year = "2010") %>% filter(pop > 100) %>%
   select(year,
-         TRTID10, hinc, powner, pwht, pblk, pop, punemp, mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up
+         TRTID10, hinc, prent, powner, pwht, pblk, pop, punemp, mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up
   ) %>%
   mutate(
     across(-year, 
@@ -308,6 +318,7 @@ colnames(LTDB_2020)
 #create tract file 
 tract_2020 <- LTDB_2020 %>%  rename(hinc = hinc19,
                                     owner = own19,
+                                    rent = rent19,
                                     ohu = hu19,
                                     wht = nhwt20,
                                     blk = nhblk20,
@@ -327,6 +338,7 @@ tract_2020 <- LTDB_2020 %>%  rename(hinc = hinc19,
 ) %>%
   mutate(
     powner = owner / ohu,
+    prent = rent / ohu,
     pwht = wht / pop,
     pblk = blk / pop, 
     phs = hs / pop,
@@ -336,7 +348,7 @@ tract_2020 <- LTDB_2020 %>%  rename(hinc = hinc19,
   st_drop_geometry() %>% 
   filter(pop > 100) %>%
   select(year,
-         TRTID10, hinc, powner, pwht, pblk, pop, punemp, mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up
+         TRTID10, hinc, powner, prent, pwht, pblk, pop, punemp, mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up
   ) %>%
   mutate(
     across(-year, 
