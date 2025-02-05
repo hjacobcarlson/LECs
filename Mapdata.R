@@ -1,35 +1,45 @@
 library(mapview)
 library(sf)
 library(leafpop)
-library(dplyr)
-library(ggplot2)
+library(tidyverse)
 library(patchwork)
+
+# Functions ####
+source("MappingSourceCode.R")
+
 
 # Read in geodata ####
 
-# 2010 Census tracts
+# 2010 Census tracts shapefile
 census_2010_shp <- st_read("data/nyu_2451_34505/nyu_2451_34505.shp") %>%
   rename(TRTID10 = tractid) %>%
   mutate(TRTID10 = as.numeric(TRTID10)) %>%
   select(TRTID10)
 
-coops_shp <- st_transform(coops_shp, st_crs(census_2010_shp))
 
-#insert UHAB coop scrape 
+# UHAB Coop Locations (web scrape)
 coops <- read_csv("data/Clean UHAB Data - Sheet1 (1).csv")
 
 # Convert to sf object
 coops_shp <- st_as_sf(coops, coords = c("Longitude", "Latitude"), crs = 4326)  # EPSG:4326 is the WGS 84 coordinate system
 
-#combine tract data from LTDB with co-op tracts 
-coops7020 <- left_join(coop_tract_intersect, tract, by = "TRTID10", relationship = "many-to-many") %>% 
-  select(-geometry, -tractnum, -name, -namelsad, -nta, -nta_name, -bcode)
+coops_shp <- st_transform(coops_shp, st_crs(census_2010_shp))
 
 
-#location of coops #### 
+# Tract location of coops #### 
 coops_maps <- st_intersection(census_2010_shp, coops_shp)  
-coops_maps <- coops_maps %>% 
-  select(-TRTID10, -tractnum, -name, -namelsad, -nta, -nta_name, -bcode)
+
+
+# Tract Data ####
+
+source("DataCleaning.R")
+
+# Combine tract data from LTDB with co-op tracts 
+coops7020 <- left_join(coops_maps, tract, by = "TRTID10", relationship = "many-to-many") %>% 
+  as_tibble() %>%
+  select(-geometry)
+
+
 
 #Making the dataframes for population with tracts and geometry using Source Code #### 
 tract70data <- population_data(census_2010_shp, tract_70)
@@ -107,6 +117,7 @@ ggplot1990unemp <- plot_unemp(census_2010_shp, tract90data, coops_maps, "punemp"
 ggplot2000unemp <- plot_unemp(census_2010_shp, tract2000data, coops_maps, "punemp")
 ggplot2010unemp <- plot_unemp(census_2010_shp, tract2010data, coops_maps, "punemp")
 ggplot2020unemp <- plot_unemp(census_2010_shp, tract2020data, coops_maps, "punemp")
+
 
 # Using source code for college graduates percent ####
 
