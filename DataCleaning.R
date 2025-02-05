@@ -4,19 +4,20 @@ library(tidyverse)
 # 1970 ####
 # Import data from LTDB, only NYC
 
-tract70 <- read_csv("data/ltdb_std_all_fullcount/LTDB_Std_1970_fullcount.csv") %>%
+tract_70 <- read_csv("data/ltdb_std_all_fullcount/LTDB_Std_1970_fullcount.csv") %>%
   filter(state == "NY") %>%
   filter(county == "Bronx County" | county == "Queens County" | county == "Kings County" 
-         | county == "Richmond County" | county == "New York County" & state == "NY")
+         | county == "Richmond County" | county == "New York County") %>%
+  mutate(TRTID10 = as.numeric(TRTID10))
 
-LTDB_1970_sample <- read_csv("data/ltdb_std_all_sample/ltdb_std_1970_sample.csv")
+LTDB_1970_sample <- read_csv("data/ltdb_std_all_sample/ltdb_std_1970_sample.csv") %>%
+  mutate(TRTID10 = as.numeric(TRTID10))
 
 
 # Join sample and population, recode
 
-tract70 <- left_join(tract70, LTDB_1970_sample, by = 'TRTID10') %>%
-  rename(
-    hinc = HINC70,
+tract_70 <- left_join(tract_70, LTDB_1970_sample, by = 'TRTID10') %>%
+  rename(hinc = HINC70,
     owner = OWN70,
     rent = RENT70,
     ohu = OHU70,
@@ -35,10 +36,8 @@ tract70 <- left_join(tract70, LTDB_1970_sample, by = 'TRTID10') %>%
     pfb = FB70,
     pfb10 = N10IMM70,
     p18und = A18UND70,
-    p60up = A60UP70
-  ) %>%
-  mutate(
-    powner = owner / ohu,
+    p60up = A60UP70) %>%
+  mutate(powner = owner / ohu,
     prent = rent / ohu,
     pwht = wht / pop,
     pblk = blk / pop, 
@@ -49,8 +48,7 @@ tract70 <- left_join(tract70, LTDB_1970_sample, by = 'TRTID10') %>%
   filter(pop > 100) %>%
   select(year, TRTID10, hinc, prent, powner, pwht, pblk, pop, punemp, 
          mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up) %>%
-  mutate(across(-year, 
-           ~ ifelse(is.na(.), NA, sprintf("%.2f", as.numeric(.)))))
+  mutate(across(-year, as.numeric))
   
 
 
@@ -60,10 +58,12 @@ tract70 <- left_join(tract70, LTDB_1970_sample, by = 'TRTID10') %>%
 tract_80 <- read_csv("data/ltdb_std_all_fullcount/LTDB_Std_1980_fullcount.csv") %>%
   filter(state == "NY") %>%
   filter(county == "Bronx County" | county == "Queens County" | county == "Kings County" 
-         | county == "Richmond County" | county == "New York County" & state == "NY")
+         | county == "Richmond County" | county == "New York County" & state == "NY") %>%
+  mutate(TRTID10 = as.numeric(TRTID10))
 
 LTDB_1980_sample <- read_csv("data/ltdb_std_all_sample/ltdb_std_1980_sample.csv") %>% 
-  rename(TRTID10 = trtid10)
+  rename(TRTID10 = trtid10) %>%
+  mutate(TRTID10 = as.numeric(TRTID10))
 
 
 # Join sample and population, recode
@@ -98,10 +98,9 @@ tract_80 <- left_join(tract_80, LTDB_1980_sample, by = 'TRTID10') %>%
          punemp = unemp / clf) %>% 
   mutate(year = "1980") %>% 
   filter(pop > 100) %>%
-  select(year,TRTID10, hinc, powner, prent, pwht, pblk, pop, punemp, 
+  select(year, TRTID10, hinc, powner, prent, pwht, pblk, pop, punemp, 
          mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up) %>%
-  mutate(across(-year, 
-           ~ ifelse(is.na(.), NA, sprintf("%.2f", as.numeric(.)))))
+  mutate(across(-year, as.numeric))
 
 
 # 1990 ####
@@ -110,9 +109,11 @@ tract_80 <- left_join(tract_80, LTDB_1980_sample, by = 'TRTID10') %>%
 tract_90 <- read_csv("data/ltdb_std_all_fullcount/LTDB_Std_1990_fullcount.csv") %>%
   filter(state == "NY") %>%
   filter(county == "Bronx County" | county == "Queens County" | county == "Kings County" 
-         | county == "Richmond County" | county == "New York County" & state == "NY")
+         | county == "Richmond County" | county == "New York County" & state == "NY") %>%
+  mutate(TRTID10 = as.numeric(TRTID10))
 
-LTDB_1990_sample <- read_csv("data/ltdb_std_all_sample/ltdb_std_1990_sample.csv")
+LTDB_1990_sample <- read_csv("data/ltdb_std_all_sample/ltdb_std_1990_sample.csv") %>%
+  mutate(TRTID10 = as.numeric(TRTID10))
 
 
 # Join sample and population, recode
@@ -148,8 +149,7 @@ tract_90 <- left_join(tract_90, LTDB_1990_sample, by = 'TRTID10') %>%
   filter(pop > 100) %>%
   select(year, TRTID10, hinc, powner, prent, pwht, pblk, pop, punemp, 
          mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up) %>%
-  mutate(across(-year, 
-           ~ ifelse(is.na(.), NA, sprintf("%.2f", as.numeric(.)))))
+  mutate(across(-year, as.numeric))
 
 
 # 2000 ####
@@ -158,9 +158,11 @@ tract_90 <- left_join(tract_90, LTDB_1990_sample, by = 'TRTID10') %>%
 tract_2000 <- read_csv("data/ltdb_std_all_fullcount/LTDB_Std_2000_fullcount.csv") %>%
   filter(state == "NY") %>%
   filter(county == "Bronx County" | county == "Queens County" | county == "Kings County" 
-         | county == "Richmond County" | county == "New York County" & state == "NY")
+         | county == "Richmond County" | county == "New York County" & state == "NY") %>%
+  mutate(TRTID10 = as.numeric(TRTID10))
 
-LTDB_2000_sample <- read_csv("data/ltdb_std_all_sample/ltdb_std_2000_sample.csv")
+LTDB_2000_sample <- read_csv("data/ltdb_std_all_sample/ltdb_std_2000_sample.csv") %>%
+  mutate(TRTID10 = as.numeric(TRTID10))
 
 
 # Join sample and population, recode
@@ -197,8 +199,7 @@ tract_2000 <- left_join(tract_2000, LTDB_2000_sample, by = 'TRTID10') %>%
   filter(pop > 100) %>%
   select(year, TRTID10, hinc, powner, prent, pwht, pblk, pop, punemp, 
          mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up) %>%
-  mutate(across(-year, 
-           ~ ifelse(is.na(.), NA, sprintf("%.2f", as.numeric(.)))))
+  mutate(across(-year, as.numeric))
 
 
 # 2010 ####
@@ -208,10 +209,12 @@ tract_2010 <- read_csv("data/ltdb_std_all_fullcount/LTDB_Std_2010_fullcount.csv"
   rename(TRTID10 = tractid) %>%
   filter(state == "NY") %>%
   filter(county == "Bronx County" | county == "Queens County" | county == "Kings County" 
-         | county == "Richmond County" | county == "New York County" & state == "NY")
+         | county == "Richmond County" | county == "New York County" & state == "NY") %>%
+  mutate(TRTID10 = as.numeric(TRTID10))
 
 LTDB_2008_2012_sample <- read_csv("data/ltdb_std_all_sample/LTDB_std_200812_Sample.csv") %>%
-  rename(TRTID10 = tractid)
+  rename(TRTID10 = tractid) %>%
+  mutate(TRTID10 = as.numeric(TRTID10))
 
 
 # Join sample and population, recode
@@ -248,18 +251,19 @@ tract_2010 <- left_join(tract_2010, LTDB_2008_2012_sample, by = 'TRTID10') %>%
   filter(pop > 100) %>%
   select(year, TRTID10, hinc, prent, powner, pwht, pblk, pop, punemp, 
          mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up) %>%
-  mutate(across(-year, 
-           ~ ifelse(is.na(.), NA, sprintf("%.2f", as.numeric(.)))))
+  mutate(across(-year, as.numeric))
 
 
 # 2020 ####
 # Import data from LTDB, only NYC
 
 tract_2020 <- read_csv("data/ltdb_std_all_fullcount/ltdb_std_2020_fullcount.csv") %>%
-  rename(TRTID10 = TRTID2010)
+  rename(TRTID10 = TRTID2010) %>%
+  mutate(TRTID10 = as.numeric(TRTID10))
 
 LTDB_2015_2019_sample <- read_csv("data/ltdb_std_all_sample/LTDB_std_201519_Sample.csv") %>% 
-  rename(TRTID10 = tractid)
+  rename(TRTID10 = tractid) %>%
+  mutate(TRTID10 = as.numeric(TRTID10))
 
 
 # Join sample and population, recode
@@ -296,14 +300,16 @@ tract_2020 <- left_join(tract_2020, LTDB_2015_2019_sample, by = "TRTID10") %>%
   filter(pop > 100) %>%
   select(year, TRTID10, hinc, powner, prent, pwht, pblk, pop, punemp, 
          mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up) %>%
-  mutate(across(-year, 
-           ~ ifelse(is.na(.), NA, sprintf("%.2f", as.numeric(.)))))
+  mutate(across(-year, as.numeric))
 
+
+# combining all years
+tract <- bind_rows(tract_70, tract_80, tract_90, tract_2000, tract_2010, tract_2020)
 
 # install sf and read in census 2020 shapefile 
-install.packages("sf")
 library(sf)
-str(LTDB_2020)
+
+
 census_2020_shp <- st_read("data/nyu_2451_34505/nyu_2451_34505.shp") 
 census_2020_shp <- census_2020_shp %>% rename(TRTID10 = tractid)
 census_2020_shp$TRTID10 <- as.numeric(census_2020_shp$TRTID10)
@@ -315,9 +321,7 @@ LTDB_2020 <- LTDB_2020_with_shp %>% select(-tractnum, -name, -namelsad, -nta, -n
 colnames(LTDB_2015_2019_sample)
 
 
-# combining all years
-tract <- bind_rows(tract_70, tract_80, tract_90, tract_2000, tract_2010, tract_2020) %>% group_by(year)%>% select(year, everything()) %>% group_by(year) %>%
-  distinct() 
+
 
 #insert UHAB coop scrape 
 coops <- read_csv("data/Clean UHAB Data - Sheet1 (1).csv")
