@@ -4,18 +4,40 @@ library(leafpop)
 library(dplyr)
 library(ggplot2)
 library(patchwork)
+
+# Read in geodata ####
+
+# 2010 Census tracts
+census_2010_shp <- st_read("data/nyu_2451_34505/nyu_2451_34505.shp") %>%
+  rename(TRTID10 = tractid) %>%
+  mutate(TRTID10 = as.numeric(TRTID10)) %>%
+  select(TRTID10)
+
+coops_shp <- st_transform(coops_shp, st_crs(census_2010_shp))
+
+#insert UHAB coop scrape 
+coops <- read_csv("data/Clean UHAB Data - Sheet1 (1).csv")
+
+# Convert to sf object
+coops_shp <- st_as_sf(coops, coords = c("Longitude", "Latitude"), crs = 4326)  # EPSG:4326 is the WGS 84 coordinate system
+
+#combine tract data from LTDB with co-op tracts 
+coops7020 <- left_join(coop_tract_intersect, tract, by = "TRTID10", relationship = "many-to-many") %>% 
+  select(-geometry, -tractnum, -name, -namelsad, -nta, -nta_name, -bcode)
+
+
 #location of coops #### 
-coops_maps <- st_intersection(census_2020_shp, coops_shp)  
+coops_maps <- st_intersection(census_2010_shp, coops_shp)  
 coops_maps <- coops_maps %>% 
   select(-TRTID10, -tractnum, -name, -namelsad, -nta, -nta_name, -bcode)
 
 #Making the dataframes for population with tracts and geometry using Source Code #### 
-tract70data <- population_data(census_2020_shp, tract_70)
-tract80data <- population_data(census_2020_shp, tract_80)
-tract90data <- population_data(census_2020_shp, tract_90)
-tract2000data <- population_data(census_2020_shp, tract_2000)
-tract2010data <- population_data(census_2020_shp, tract_2010)
-tract2020data <- population_data(census_2020_shp, tract_2020)
+tract70data <- population_data(census_2010_shp, tract_70)
+tract80data <- population_data(census_2010_shp, tract_80)
+tract90data <- population_data(census_2010_shp, tract_90)
+tract2000data <- population_data(census_2010_shp, tract_2000)
+tract2010data <- population_data(census_2010_shp, tract_2010)
+tract2020data <- population_data(census_2010_shp, tract_2020)
 
 
 
@@ -36,19 +58,19 @@ mapview2020blk <- plot_blk_mapview(coops_maps, tract2020data)
 # Using source code plot_population_map to create tract pop maps on ggplot2 #### 
 
 ggplot1970pop <- plot_population_map( tract70data, coops_maps)
-ggplot1980pop <- plot_population_map(census_data = census_2020_shp, 
+ggplot1980pop <- plot_population_map(census_data = census_2010_shp, 
                                         population_data = tract80data,
                                         tract_data = coops_maps)  
-ggplot1990pop <- plot_population_map(census_data = census_2020_shp, 
+ggplot1990pop <- plot_population_map(census_data = census_2010_shp, 
                                      population_data = tract90data,
                                      tract_data = coops_maps)  
-ggplot2000pop <- plot_population_map(census_data = census_2020_shp, 
+ggplot2000pop <- plot_population_map(census_data = census_2010_shp, 
                                      population_data = tract2000data, 
                                      tract_data = coops_maps) 
-ggplot2010pop <- plot_population_map(census_data = census_2020_shp, 
+ggplot2010pop <- plot_population_map(census_data = census_2010_shp, 
                                      population_data = tract2010data,
                                      tract_data = coops_maps)  
-ggplot2020pop <- plot_population_map(census_data = census_2020_shp, 
+ggplot2020pop <- plot_population_map(census_data = census_2010_shp, 
                                      population_data = tract2020data,
                                      tract_data = coops_maps)  
 
@@ -60,31 +82,31 @@ pop_map <- ggplot1970pop + ggplot2020pop
 
 
 # Using source code for black percent on ggplot ####
-ggplot1970blk <- plot_race_map(census_2020_shp, tract70data, coops_maps, "pblk")
-ggplot1980blk <- plot_race_map(census_2020_shp, tract80data, coops_maps, "pblk")
-ggplot1990blk <- plot_race_map(census_2020_shp, tract90data, coops_maps, "pblk")
-ggplot2000blk <- plot_race_map(census_2020_shp, tract2000data, coops_maps, "pblk")
-ggplot2010blk <- plot_race_map(census_2020_shp, tract2010data, coops_maps, "pblk")
-ggplot2020blk <- plot_race_map(census_2020_shp, tract2020data, coops_maps, "pblk")
+ggplot1970blk <- plot_race_map(census_2010_shp, tract70data, coops_maps, "pblk")
+ggplot1980blk <- plot_race_map(census_2010_shp, tract80data, coops_maps, "pblk")
+ggplot1990blk <- plot_race_map(census_2010_shp, tract90data, coops_maps, "pblk")
+ggplot2000blk <- plot_race_map(census_2010_shp, tract2000data, coops_maps, "pblk")
+ggplot2010blk <- plot_race_map(census_2010_shp, tract2010data, coops_maps, "pblk")
+ggplot2020blk <- plot_race_map(census_2010_shp, tract2020data, coops_maps, "pblk")
 
 
 # Using source code for white percent on ggplot ####
 
-ggplot1970wht <- plot_race_map(census_2020_shp, tract70data, coops_maps, "pwht")
-ggplot1980wht <- plot_race_map(census_2020_shp, tract80data, coops_maps, "pwht")
-ggplot1990wht <- plot_race_map(census_2020_shp, tract90data, coops_maps, "pwht")
-ggplot2000wht <- plot_race_map(census_2020_shp, tract2000data, coops_maps, "pwht")
-ggplot2010wht <- plot_race_map(census_2020_shp, tract2010data, coops_maps, "pwht")
-ggplot2020wht <- plot_race_map(census_2020_shp, tract2020data, coops_maps, "pwht")
+ggplot1970wht <- plot_race_map(census_2010_shp, tract70data, coops_maps, "pwht")
+ggplot1980wht <- plot_race_map(census_2010_shp, tract80data, coops_maps, "pwht")
+ggplot1990wht <- plot_race_map(census_2010_shp, tract90data, coops_maps, "pwht")
+ggplot2000wht <- plot_race_map(census_2010_shp, tract2000data, coops_maps, "pwht")
+ggplot2010wht <- plot_race_map(census_2010_shp, tract2010data, coops_maps, "pwht")
+ggplot2020wht <- plot_race_map(census_2010_shp, tract2020data, coops_maps, "pwht")
 
 
 # Using source code for unemployment percent ####
-ggplot1970unemp <- plot_unemp(census_2020_shp, tract70data, coops_maps, "punemp")
-ggplot1980unemp <- plot_unemp(census_2020_shp, tract80data, coops_maps, "punemp")
-ggplot1990unemp <- plot_unemp(census_2020_shp, tract90data, coops_maps, "punemp")
-ggplot2000unemp <- plot_unemp(census_2020_shp, tract2000data, coops_maps, "punemp")
-ggplot2010unemp <- plot_unemp(census_2020_shp, tract2010data, coops_maps, "punemp")
-ggplot2020unemp <- plot_unemp(census_2020_shp, tract2020data, coops_maps, "punemp")
+ggplot1970unemp <- plot_unemp(census_2010_shp, tract70data, coops_maps, "punemp")
+ggplot1980unemp <- plot_unemp(census_2010_shp, tract80data, coops_maps, "punemp")
+ggplot1990unemp <- plot_unemp(census_2010_shp, tract90data, coops_maps, "punemp")
+ggplot2000unemp <- plot_unemp(census_2010_shp, tract2000data, coops_maps, "punemp")
+ggplot2010unemp <- plot_unemp(census_2010_shp, tract2010data, coops_maps, "punemp")
+ggplot2020unemp <- plot_unemp(census_2010_shp, tract2020data, coops_maps, "punemp")
 
 # Using source code for college graduates percent ####
 
