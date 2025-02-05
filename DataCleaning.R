@@ -306,3 +306,4 @@ tract_2020 <- left_join(tract_2020, LTDB_2015_2019_sample, by = "TRTID10") %>%
 # combining all years
 tract <- bind_rows(tract_70, tract_80, tract_90, tract_2000, tract_2010, tract_2020)
 
+rm(list=ls(pattern="^LTDB_"))
