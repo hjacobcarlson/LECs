@@ -13,7 +13,7 @@ plot_map <- function(geodata, mapvar, addcoops = TRUE,
     geom_sf(data = geodata, aes(fill = !!mapvar)) +  
     
     # Use a viridis color scale for the population data, setting limits
-    scale_fill_viridis_c(option = "C", limits = c(0, 10000),
+    scale_fill_viridis_c(option = "C", #limits = c(0, 10000), # Let limits be free
                          direction = -1,
                          name = title) +
     
