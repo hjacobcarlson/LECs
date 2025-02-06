@@ -30,6 +30,11 @@ coops_shp <- st_transform(coops_shp, st_crs(census_2010_shp))
 coops_maps <- st_intersection(census_2010_shp, coops_shp)  
 
 
+# TEMPORARY! Only until we fix the geocoding, or get data directly from UHAB
+# This makes the coops_shp only include those that were successfully intersected w/ the NYC tract shapefile
+coops_shp <- coops_map
+
+
 # Tract Data ####
 
 source("DataCleaning.R")
