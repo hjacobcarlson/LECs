@@ -306,6 +306,31 @@ tract_2020 <- left_join(tract_2020, LTDB_2015_2019_sample, by = "TRTID10") %>%
 # combining all years
 tract <- bind_rows(tract_70, tract_80, tract_90, tract_2000, tract_2010, tract_2020)
 
+
+# Create gentrification variable
+
+tract <- tract %>%
+  group_by(year) %>%
+  # if tract is at or below 40th pctile, hinc
+  mutate(hinc_40ile = quantile(hinc, 0.40, na.rm = TRUE), 
+         gent_1 = hinc <= hinc_40ile) %>%
+  # calculate tract-level change in % w/ college degree
+  group_by(TRTID10) %>%
+  arrange(year) %>%
+  mutate(pcol_chg = pcol - lag(pcol)) %>%
+  # if increase in % w/ college degree is above 50th pctile *of increases* in a given year
+  group_by(year) %>%
+  mutate(pcol_chg_50ile = quantile(pcol_chg[pcol_chg > 0], 0.5, na.rm = TRUE),
+         gent_2 = pcol_chg >= pcol_chg_50ile) %>%
+  group_by(TRTID10) %>%
+  arrange(year) %>%
+  # make gentrification variable
+  mutate(gent = case_when(lag(gent_1) == FALSE ~ "Not gentrifiable", 
+                          lag(gent_1) == TRUE & gent_2 == FALSE ~ "Non-gentrifying",
+                          lag(gent_1) == TRUE & gent_2 == TRUE ~ "Gentrifying",
+                          TRUE ~ NA))
+
+
 rm(list=ls(pattern="^LTDB_"))
 
 
@@ -345,6 +370,7 @@ coops_shp <- coops_maps
 coops7020 <- left_join(coops_maps, tract, by = "TRTID10", relationship = "many-to-many") %>% 
   as_tibble() %>%
   select(-geometry)
+
 
 
 # Write out data ####
