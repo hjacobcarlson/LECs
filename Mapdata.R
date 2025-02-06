@@ -8,42 +8,8 @@ library(patchwork)
 source("MappingSourceCode.R")
 
 
-# Read in geodata ####
-
-# 2010 Census tracts shapefile
-census_2010_shp <- st_read("data/nyu_2451_34505/nyu_2451_34505.shp") %>%
-  rename(TRTID10 = tractid) %>%
-  mutate(TRTID10 = as.numeric(TRTID10)) %>%
-  select(TRTID10)
-
-
-# UHAB Coop Locations (web scrape)
-coops <- read_csv("data/Clean UHAB Data - Sheet1 (1).csv")
-
-# Convert to sf object
-coops_shp <- st_as_sf(coops, coords = c("Longitude", "Latitude"), crs = 4326)  # EPSG:4326 is the WGS 84 coordinate system
-
-coops_shp <- st_transform(coops_shp, st_crs(census_2010_shp))
-
-
-# Tract location of coops #### 
-coops_maps <- st_intersection(census_2010_shp, coops_shp)  
-
-
-# TEMPORARY! Only until we fix the geocoding, or get data directly from UHAB
-# This makes the coops_shp only include those that were successfully intersected w/ the NYC tract shapefile
-coops_shp <- coops_maps
-
-
-# Tract Data ####
-
+# Read in Data ####
 source("DataCleaning.R")
-
-# Combine tract data from LTDB with co-op tracts 
-coops7020 <- left_join(coops_maps, tract, by = "TRTID10", relationship = "many-to-many") %>% 
-  as_tibble() %>%
-  select(-geometry)
-
 
 
 #Making the dataframes for population with tracts and geometry using Source Code #### 
