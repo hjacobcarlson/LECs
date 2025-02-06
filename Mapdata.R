@@ -56,21 +56,6 @@ tract2020shp <- population_data(census_2010_shp, tract_2020)
 
 
 
-# Using source code plot_map to create pop map on mapview #### 
-mapview1970pop <- plot_pop_map(coops_maps, tract70shp)
-mapview1980pop <- plot_pop_map(coops_maps, tract80shp)
-mapview1990pop <- plot_pop_map(coops_maps, tract90shp)
-mapview2020pop <- plot_pop_map(coops_maps, tract2020shp)
-
-# Using source code plot_map to create blk map on mapview #### 
-
-mapview1970blk <- plot_blk_mapview(coops_maps, tract70shp)
-mapview1980blk <- plot_blk_mapview(coops_maps, tract80shp)
-mapview1990blk <- plot_blk_mapview(coops_maps, tract90shp)
-mapview2000blk <- plot_blk_mapview(coops_maps, tract2000shp)
-mapview2010blk <- plot_blk_mapview(coops_maps, tract2010shp)
-mapview2020blk <- plot_blk_mapview(coops_maps, tract2020shp)
-
 
 # Create maps by year, variable ####
 
@@ -130,3 +115,20 @@ grid.arrange(ggplot1970blk, ggplot1980blk, ncol = 2)
 pop_map_combined <- ggplot1970pop + ggplot2020pop 
 
 pop_map <- ggplot1970pop + ggplot2020pop
+
+
+# Using source code plot_map to create pop map on mapview #### 
+mapview1970pop <- plot_pop_map(coops_maps, tract70shp)
+mapview1980pop <- plot_pop_map(coops_maps, tract80shp)
+mapview1990pop <- plot_pop_map(coops_maps, tract90shp)
+mapview2020pop <- plot_pop_map(coops_maps, tract2020shp)
+
+# Using source code plot_map to create blk map on mapview #### 
+
+mapview1970blk <- plot_blk_mapview(coops_maps, tract70shp)
+mapview1980blk <- plot_blk_mapview(coops_maps, tract80shp)
+mapview1990blk <- plot_blk_mapview(coops_maps, tract90shp)
+mapview2000blk <- plot_blk_mapview(coops_maps, tract2000shp)
+mapview2010blk <- plot_blk_mapview(coops_maps, tract2010shp)
+mapview2020blk <- plot_blk_mapview(coops_maps, tract2020shp)
+
