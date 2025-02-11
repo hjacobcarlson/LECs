@@ -21,6 +21,7 @@ tract_70 <- left_join(tract_70, LTDB_1970_sample, by = 'TRTID10') %>%
     owner = OWN70,
     rent = RENT70,
     ohu = OHU70,
+    multi = MULTI70,
     wht = WHITE70,
     blk = BLACK70,
     pop = POP70,
@@ -46,7 +47,7 @@ tract_70 <- left_join(tract_70, LTDB_1970_sample, by = 'TRTID10') %>%
     punemp = unemp / clf) %>% 
   mutate(year = "1970") %>% 
   filter(pop > 100) %>%
-  select(year, TRTID10, hinc, prent, powner, pwht, pblk, pop, punemp, 
+  select(year, TRTID10, hinc, prent, powner, pwht, pblk, pop, punemp, ohu, multi,
          mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up) %>%
   mutate(across(-year, as.numeric))
   
@@ -73,6 +74,7 @@ tract_80 <- left_join(tract_80, LTDB_1980_sample, by = 'TRTID10') %>%
          owner = OWN80,
          rent = RENT80,
          ohu = OHU80,
+         multi = multi80,
          wht = NHWHT80,
          blk = NHBLK80,
          pop = POP80, 
@@ -98,7 +100,7 @@ tract_80 <- left_join(tract_80, LTDB_1980_sample, by = 'TRTID10') %>%
          punemp = unemp / clf) %>% 
   mutate(year = "1980") %>% 
   filter(pop > 100) %>%
-  select(year, TRTID10, hinc, powner, prent, pwht, pblk, pop, punemp, 
+  select(year, TRTID10, hinc, powner, prent, pwht, pblk, pop, punemp, ohu, multi,
          mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up) %>%
   mutate(across(-year, as.numeric))
 
@@ -123,9 +125,11 @@ tract_90 <- left_join(tract_90, LTDB_1990_sample, by = 'TRTID10') %>%
          owner = OWN90,
          rent = RENT90,
          ohu = OHU90,
+         multi = MULTI90,
          wht = NHWHT90,
          blk = NHBLK90,
-         pop = POP90, hs = HS90,
+         pop = POP90, 
+         hs = HS90,
          col = COL90,
          unemp = UNEMP90,
          mrent = MRENT90,
@@ -147,7 +151,7 @@ tract_90 <- left_join(tract_90, LTDB_1990_sample, by = 'TRTID10') %>%
          punemp = unemp / clf) %>% 
   mutate(year = "1990") %>% 
   filter(pop > 100) %>%
-  select(year, TRTID10, hinc, powner, prent, pwht, pblk, pop, punemp, 
+  select(year, TRTID10, hinc, powner, prent, pwht, pblk, pop, punemp, ohu, multi,
          mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up) %>%
   mutate(across(-year, as.numeric))
 
@@ -172,6 +176,7 @@ tract_2000 <- left_join(tract_2000, LTDB_2000_sample, by = 'TRTID10') %>%
          owner = OWN00,
          rent = RENT00, 
          ohu = HU00,
+         multi = MULTI00,
          wht = NHWHT00,
          blk = NHBLK00,
          pop = POP00,
@@ -197,7 +202,7 @@ tract_2000 <- left_join(tract_2000, LTDB_2000_sample, by = 'TRTID10') %>%
          punemp = unemp / clf) %>% 
   mutate(year = "2000") %>% 
   filter(pop > 100) %>%
-  select(year, TRTID10, hinc, powner, prent, pwht, pblk, pop, punemp, 
+  select(year, TRTID10, hinc, powner, prent, pwht, pblk, pop, punemp, ohu, multi,
          mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up) %>%
   mutate(across(-year, as.numeric))
 
@@ -224,6 +229,7 @@ tract_2010 <- left_join(tract_2010, LTDB_2008_2012_sample, by = 'TRTID10') %>%
          owner = own10,
          rent = rent10,
          ohu = hu10,
+         multi = multi12,
          wht = nhwht10,
          blk = nhblk10,
          pop = pop10,
@@ -249,7 +255,7 @@ tract_2010 <- left_join(tract_2010, LTDB_2008_2012_sample, by = 'TRTID10') %>%
          punemp = unemp / clf) %>% 
   mutate(year = "2010") %>% 
   filter(pop > 100) %>%
-  select(year, TRTID10, hinc, prent, powner, pwht, pblk, pop, punemp, 
+  select(year, TRTID10, hinc, prent, powner, pwht, pblk, pop, punemp, ohu, multi,
          mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up) %>%
   mutate(across(-year, as.numeric))
 
@@ -273,6 +279,7 @@ tract_2020 <- left_join(tract_2020, LTDB_2015_2019_sample, by = "TRTID10") %>%
          owner = own19,
          rent = rent19,
          ohu = hu19,
+         multi = multi19,
          wht = nhwt20,
          blk = nhblk20,
          pop = pop20, 
@@ -298,7 +305,7 @@ tract_2020 <- left_join(tract_2020, LTDB_2015_2019_sample, by = "TRTID10") %>%
          punemp = unemp / clf) %>% 
   mutate(year = "2020") %>%
   filter(pop > 100) %>%
-  select(year, TRTID10, hinc, powner, prent, pwht, pblk, pop, punemp, 
+  select(year, TRTID10, hinc, powner, prent, pwht, pblk, pop, punemp, ohu, multi,
          mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up) %>%
   mutate(across(-year, as.numeric))
 
