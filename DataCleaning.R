@@ -1,7 +1,43 @@
 library(tidyverse)
 library(sf)
 
-# 1970 ####
+# Read in geodata ####
+
+# 2010 Census tracts shapefile
+census_2010_shp <- st_read("data/nyu_2451_34505/nyu_2451_34505.shp") %>%
+  rename(TRTID10 = tractid) %>%
+  mutate(TRTID10 = as.numeric(TRTID10)) %>%
+  select(TRTID10)
+
+
+# UHAB Coop Locations (web scrape)
+coops <- read_csv("data/Clean UHAB Data - Sheet1 (1).csv")
+
+# Convert to sf object
+coops_shp <- st_as_sf(coops, coords = c("Longitude", "Latitude"), crs = 4326)  # EPSG:4326 is the WGS 84 coordinate system
+
+coops_shp <- st_transform(coops_shp, st_crs(census_2010_shp))
+
+
+# Tract location of coops #### 
+coops_maps <- st_intersection(census_2010_shp, coops_shp)  
+
+
+# TEMPORARY! Only until we fix the geocoding, or get data directly from UHAB
+# This makes the coops_shp only include those that were successfully intersected w/ the NYC tract shapefile
+coops_shp <- coops_maps
+
+
+# Count number of coops in each tract
+n_coops <- coops_maps %>%
+  as_tibble() %>%
+  group_by(TRTID10) %>%
+  summarize(ncoops = n())
+
+
+
+# Tract Data ####
+## 1970 ####
 # Import data from LTDB, only NYC
 
 tract_70 <- read_csv("data/ltdb_std_all_fullcount/LTDB_Std_1970_fullcount.csv") %>%
@@ -49,17 +85,19 @@ tract_70 <- left_join(tract_70, LTDB_1970_sample, by = 'TRTID10') %>%
   filter(pop > 100) %>%
   select(year, TRTID10, hinc, prent, powner, pwht, pblk, pop, punemp, ohu, multi,
          mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up) %>%
-  mutate(across(-year, as.numeric))
+  mutate(across(-year, as.numeric)) %>%
+  left_join(n_coops, by = "TRTID10") %>%
+  mutate(ncoops = if_else(is.na(ncoops), 0, ncoops))
   
 
 
-# 1980 ####
+## 1980 ####
 # Import data from LTDB, only NYC
 
 tract_80 <- read_csv("data/ltdb_std_all_fullcount/LTDB_Std_1980_fullcount.csv") %>%
   filter(state == "NY") %>%
   filter(county == "Bronx County" | county == "Queens County" | county == "Kings County" 
-         | county == "Richmond County" | county == "New York County" & state == "NY") %>%
+         | county == "Richmond County" | county == "New York County") %>%
   mutate(TRTID10 = as.numeric(TRTID10))
 
 LTDB_1980_sample <- read_csv("data/ltdb_std_all_sample/ltdb_std_1980_sample.csv") %>% 
@@ -102,16 +140,18 @@ tract_80 <- left_join(tract_80, LTDB_1980_sample, by = 'TRTID10') %>%
   filter(pop > 100) %>%
   select(year, TRTID10, hinc, powner, prent, pwht, pblk, pop, punemp, ohu, multi,
          mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up) %>%
-  mutate(across(-year, as.numeric))
+  mutate(across(-year, as.numeric)) %>%
+  left_join(n_coops, by = "TRTID10") %>%
+  mutate(ncoops = if_else(is.na(ncoops), 0, ncoops))
 
 
-# 1990 ####
+## 1990 ####
 # Import data from LTDB, only NYC
 
 tract_90 <- read_csv("data/ltdb_std_all_fullcount/LTDB_Std_1990_fullcount.csv") %>%
   filter(state == "NY") %>%
   filter(county == "Bronx County" | county == "Queens County" | county == "Kings County" 
-         | county == "Richmond County" | county == "New York County" & state == "NY") %>%
+         | county == "Richmond County" | county == "New York County") %>%
   mutate(TRTID10 = as.numeric(TRTID10))
 
 LTDB_1990_sample <- read_csv("data/ltdb_std_all_sample/ltdb_std_1990_sample.csv") %>%
@@ -153,16 +193,18 @@ tract_90 <- left_join(tract_90, LTDB_1990_sample, by = 'TRTID10') %>%
   filter(pop > 100) %>%
   select(year, TRTID10, hinc, powner, prent, pwht, pblk, pop, punemp, ohu, multi,
          mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up) %>%
-  mutate(across(-year, as.numeric))
+  mutate(across(-year, as.numeric)) %>%
+  left_join(n_coops, by = "TRTID10") %>%
+  mutate(ncoops = if_else(is.na(ncoops), 0, ncoops))
 
 
-# 2000 ####
+## 2000 ####
 # Import data from LTDB, only NYC
 
 tract_2000 <- read_csv("data/ltdb_std_all_fullcount/LTDB_Std_2000_fullcount.csv") %>%
   filter(state == "NY") %>%
   filter(county == "Bronx County" | county == "Queens County" | county == "Kings County" 
-         | county == "Richmond County" | county == "New York County" & state == "NY") %>%
+         | county == "Richmond County" | county == "New York County") %>%
   mutate(TRTID10 = as.numeric(TRTID10))
 
 LTDB_2000_sample <- read_csv("data/ltdb_std_all_sample/ltdb_std_2000_sample.csv") %>%
@@ -204,17 +246,19 @@ tract_2000 <- left_join(tract_2000, LTDB_2000_sample, by = 'TRTID10') %>%
   filter(pop > 100) %>%
   select(year, TRTID10, hinc, powner, prent, pwht, pblk, pop, punemp, ohu, multi,
          mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up) %>%
-  mutate(across(-year, as.numeric))
+  mutate(across(-year, as.numeric)) %>%
+  left_join(n_coops, by = "TRTID10") %>%
+  mutate(ncoops = if_else(is.na(ncoops), 0, ncoops))
 
 
-# 2010 ####
+## 2010 ####
 # Import data from LTDB, only NYC
 
 tract_2010 <- read_csv("data/ltdb_std_all_fullcount/LTDB_Std_2010_fullcount.csv") %>%
   rename(TRTID10 = tractid) %>%
   filter(state == "NY") %>%
   filter(county == "Bronx County" | county == "Queens County" | county == "Kings County" 
-         | county == "Richmond County" | county == "New York County" & state == "NY") %>%
+         | county == "Richmond County" | county == "New York County") %>%
   mutate(TRTID10 = as.numeric(TRTID10))
 
 LTDB_2008_2012_sample <- read_csv("data/ltdb_std_all_sample/LTDB_std_200812_Sample.csv") %>%
@@ -257,10 +301,12 @@ tract_2010 <- left_join(tract_2010, LTDB_2008_2012_sample, by = 'TRTID10') %>%
   filter(pop > 100) %>%
   select(year, TRTID10, hinc, prent, powner, pwht, pblk, pop, punemp, ohu, multi,
          mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up) %>%
-  mutate(across(-year, as.numeric))
+  mutate(across(-year, as.numeric)) %>%
+  left_join(n_coops, by = "TRTID10") %>%
+  mutate(ncoops = if_else(is.na(ncoops), 0, ncoops))
 
 
-# 2020 ####
+## 2020 ####
 # Import data from LTDB, only NYC
 
 tract_2020 <- read_csv("data/ltdb_std_all_fullcount/ltdb_std_2020_fullcount.csv") %>%
@@ -269,12 +315,15 @@ tract_2020 <- read_csv("data/ltdb_std_all_fullcount/ltdb_std_2020_fullcount.csv"
 
 LTDB_2015_2019_sample <- read_csv("data/ltdb_std_all_sample/LTDB_std_201519_Sample.csv") %>% 
   rename(TRTID10 = tractid) %>%
-  mutate(TRTID10 = as.numeric(TRTID10))
+  mutate(TRTID10 = as.numeric(TRTID10)) %>%
+  filter(statea == "New York") %>%
+  filter(countya == "Bronx County" | countya == "Queens County" | countya == "Kings County" 
+         | countya == "Richmond County" | countya == "New York County")
 
 
 # Join sample and population, recode
 
-tract_2020 <- left_join(tract_2020, LTDB_2015_2019_sample, by = "TRTID10") %>%
+tract_2020 <- right_join(tract_2020, LTDB_2015_2019_sample, by = "TRTID10") %>%
   rename(hinc = hinc19,
          owner = own19,
          rent = rent19,
@@ -307,9 +356,11 @@ tract_2020 <- left_join(tract_2020, LTDB_2015_2019_sample, by = "TRTID10") %>%
   filter(pop > 100) %>%
   select(year, TRTID10, hinc, powner, prent, pwht, pblk, pop, punemp, ohu, multi,
          mrent, pcol, phs, str30old, hh10old, fhh, pov, pfb, pfb10, p18und, p60up) %>%
-  mutate(across(-year, as.numeric))
+  mutate(across(-year, as.numeric)) %>%
+  left_join(n_coops, by = "TRTID10") %>%
+  mutate(ncoops = if_else(is.na(ncoops), 0, ncoops))
 
-
+## Panel data ####
 # combining all years
 tract <- bind_rows(tract_70, tract_80, tract_90, tract_2000, tract_2010, tract_2020)
 
@@ -344,34 +395,9 @@ rm(list=ls(pattern="^LTDB_"))
 
 
 
-# Read in geodata ####
-
-# 2010 Census tracts shapefile
-census_2010_shp <- st_read("data/nyu_2451_34505/nyu_2451_34505.shp") %>%
-  rename(TRTID10 = tractid) %>%
-  mutate(TRTID10 = as.numeric(TRTID10)) %>%
-  select(TRTID10)
 
 
-# UHAB Coop Locations (web scrape)
-coops <- read_csv("data/Clean UHAB Data - Sheet1 (1).csv")
-
-# Convert to sf object
-coops_shp <- st_as_sf(coops, coords = c("Longitude", "Latitude"), crs = 4326)  # EPSG:4326 is the WGS 84 coordinate system
-
-coops_shp <- st_transform(coops_shp, st_crs(census_2010_shp))
-
-
-# Tract location of coops #### 
-coops_maps <- st_intersection(census_2010_shp, coops_shp)  
-
-
-# TEMPORARY! Only until we fix the geocoding, or get data directly from UHAB
-# This makes the coops_shp only include those that were successfully intersected w/ the NYC tract shapefile
-coops_shp <- coops_maps
-
-
-# Tract Data ####
+# Joins ####
 
 # Combine tract data from LTDB with co-op tracts 
 coops7020 <- left_join(coops_maps, tract, by = "TRTID10", relationship = "many-to-many") %>% 
@@ -389,6 +415,7 @@ coops7020 <- left_join(coops_maps, tract, by = "TRTID10", relationship = "many-t
 # write_csv(tract_2000, "data/tract2000.csv")
 # write_csv(tract_2010, "data/tract2010.csv")
 # write_csv(tract_2020, "data/tract2020.csv")
+# write_csv(tract, "data/tract.csv")
 
 
 
