@@ -375,13 +375,13 @@ coops7020 <- left_join(coops_maps, tract, by = "TRTID10", relationship = "many-t
 
 # Write out data ####
 
-write_csv(coops7020, "data/coops7020.csv")
-write_csv(tract_70, "data/tract70.csv")
-write_csv(tract_80, "data/tract80.csv")
-write_csv(tract_90, "data/tract90.csv")
-write_csv(tract_2000, "data/tract2000.csv")
-write_csv(tract_2010, "data/tract2010.csv")
-write_csv(tract_2020, "data/tract2020.csv")
+# write_csv(coops7020, "data/coops7020.csv")
+# write_csv(tract_70, "data/tract70.csv")
+# write_csv(tract_80, "data/tract80.csv")
+# write_csv(tract_90, "data/tract90.csv")
+# write_csv(tract_2000, "data/tract2000.csv")
+# write_csv(tract_2010, "data/tract2010.csv")
+# write_csv(tract_2020, "data/tract2020.csv")
 
 
 
