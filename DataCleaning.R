@@ -10,11 +10,13 @@ census_2010_shp <- st_read("data/nyu_2451_34505/nyu_2451_34505.shp") %>%
   select(TRTID10)
 
 
-# UHAB Coop Locations (web scrape)
-coops <- read_csv("data/Clean UHAB Data - Sheet1 (1).csv")
+# UHAB Coop Locations (full UHAB data, v1)
+coops <- read_csv("data/NY Co-op Data (1).csv") %>%
+  filter(!is.na(ID)) %>%
+  filter(!is.na(LONG))
 
 # Convert to sf object
-coops_shp <- st_as_sf(coops, coords = c("Longitude", "Latitude"), crs = 4326)  # EPSG:4326 is the WGS 84 coordinate system
+coops_shp <- st_as_sf(coops, coords = c("LONG", "LAT"), crs = 4326)  # EPSG:4326 is the WGS 84 coordinate system
 
 coops_shp <- st_transform(coops_shp, st_crs(census_2010_shp))
 
@@ -25,14 +27,15 @@ coops_maps <- st_intersection(census_2010_shp, coops_shp)
 
 # TEMPORARY! Only until we fix the geocoding, or get data directly from UHAB
 # This makes the coops_shp only include those that were successfully intersected w/ the NYC tract shapefile
-coops_shp <- coops_maps
+#coops_shp <- coops_maps
 
 
 # Count number of coops in each tract
 n_coops <- coops_maps %>%
   as_tibble() %>%
   group_by(TRTID10) %>%
-  summarize(ncoops = n())
+  summarize(ncoops = n(),
+            ncoopunits = sum(UNITS, na.rm = TRUE))
 
 
 
@@ -390,8 +393,7 @@ tract_2020 <- right_join(tract_2020, LTDB_2015_2019_sample, by = "TRTID10") %>%
 
 ## Panel data ####
 # combining all years
-tract <- bind_rows(tract_70, tract_80, tract_90, tract_2000, tract_2010, tract_2020)
-
+tract <- bind_rows(tract_70, tract_80, tract_90, tract_2000, tract_2010, tract_2020) 
 
 # Create gentrification variable
 
@@ -421,8 +423,13 @@ rm(list=ls(pattern="^LTDB_"))
 
 
 
+# Add crime data 
 
+crime <- read_csv("data/crime_clean.csv") %>%
+  rename(year = Year) %>%
+  mutate(year = as.character(year))
 
+tract <- left_join(tract, crime, by = c("year", "TRTID10"))
 
 
 # Joins ####
@@ -436,14 +443,14 @@ coops7020 <- left_join(coops_maps, tract, by = "TRTID10", relationship = "many-t
 
 # Write out data ####
 
-# write_csv(coops7020, "data/coops7020.csv")
-# write_csv(tract_70, "data/tract70.csv")
-# write_csv(tract_80, "data/tract80.csv")
-# write_csv(tract_90, "data/tract90.csv")
-# write_csv(tract_2000, "data/tract2000.csv")
-# write_csv(tract_2010, "data/tract2010.csv")
-# write_csv(tract_2020, "data/tract2020.csv")
-# write_csv(tract, "data/tract.csv")
+write_csv(coops7020, "data/coops7020.csv")
+write_csv(tract_70, "data/tract70.csv")
+write_csv(tract_80, "data/tract80.csv")
+write_csv(tract_90, "data/tract90.csv")
+write_csv(tract_2000, "data/tract2000.csv")
+write_csv(tract_2010, "data/tract2010.csv")
+write_csv(tract_2020, "data/tract2020.csv")
+write_csv(tract, "data/tract.csv")
 
 
 
