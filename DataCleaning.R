@@ -1,5 +1,26 @@
 library(tidyverse)
 library(sf)
+library(quantmod)
+
+# Functions ####
+# To adjust HH Incomes for Inflation
+
+# Adjust median incomes to 2015 dollars
+getSymbols("CPIAUCSL", src='FRED') #Consumer Price Index for All Urban Consumers: All Items
+#[1] "CPIAUCSL"
+
+avg.cpi <- apply.yearly(CPIAUCSL, mean)
+
+cf <- as.numeric(avg.cpi['2020'])/avg.cpi #using 2020 as the base year
+cdf <- as.data.frame(cf)
+cdf$LastDayOfYear <- rownames(cdf)
+cdf$year <- sapply(cdf$LastDayOfYear, FUN=function(x) as.numeric(substr(x, 1, 4)))
+cdf <- cdf %>%
+  mutate(year = as.character(year))
+
+
+
+
 
 # Read in geodata ####
 
@@ -94,7 +115,8 @@ tract_70 <- left_join(tract_70, LTDB_1970_sample, by = 'TRTID10') %>%
          mrent, pcol, phs, str30old, hh10old, fhh, pov, ppov, pfb, pfb10, p18und, p60up) %>%
   mutate(across(-c(year, county), as.numeric)) %>%
   left_join(n_coops, by = "TRTID10") %>%
-  mutate(ncoops = if_else(is.na(ncoops), 0, ncoops))
+  mutate(ncoops = if_else(is.na(ncoops), 0, ncoops),
+         ncoopunits = if_else(is.na(ncoopunits), 0, ncoopunits))
   
 
 
@@ -154,7 +176,8 @@ tract_80 <- left_join(tract_80, LTDB_1980_sample, by = 'TRTID10') %>%
          mrent, pcol, phs, str30old, hh10old, fhh, pov, ppov, pfb, pfb10, p18und, p60up) %>%
   mutate(across(-c(year, county), as.numeric)) %>%
   left_join(n_coops, by = "TRTID10") %>%
-  mutate(ncoops = if_else(is.na(ncoops), 0, ncoops))
+  mutate(ncoops = if_else(is.na(ncoops), 0, ncoops),
+         ncoopunits = if_else(is.na(ncoopunits), 0, ncoopunits))
 
 
 ## 1990 ####
@@ -212,7 +235,8 @@ tract_90 <- left_join(tract_90, LTDB_1990_sample, by = 'TRTID10') %>%
          mrent, pcol, phs, str30old, hh10old, fhh, pov, ppov, pfb, pfb10, p18und, p60up) %>%
   mutate(across(-c(year, county), as.numeric)) %>%
   left_join(n_coops, by = "TRTID10") %>%
-  mutate(ncoops = if_else(is.na(ncoops), 0, ncoops))
+  mutate(ncoops = if_else(is.na(ncoops), 0, ncoops),
+         ncoopunits = if_else(is.na(ncoopunits), 0, ncoopunits))
 
 
 ## 2000 ####
@@ -270,7 +294,8 @@ tract_2000 <- left_join(tract_2000, LTDB_2000_sample, by = 'TRTID10') %>%
          mrent, pcol, phs, str30old, hh10old, fhh, pov, ppov, pfb, pfb10, p18und, p60up) %>%
   mutate(across(-c(year, county), as.numeric)) %>%
   left_join(n_coops, by = "TRTID10") %>%
-  mutate(ncoops = if_else(is.na(ncoops), 0, ncoops))
+  mutate(ncoops = if_else(is.na(ncoops), 0, ncoops),
+         ncoopunits = if_else(is.na(ncoopunits), 0, ncoopunits))
 
 
 ## 2010 ####
@@ -329,7 +354,8 @@ tract_2010 <- left_join(tract_2010, LTDB_2008_2012_sample, by = 'TRTID10') %>%
          mrent, pcol, phs, str30old, hh10old, fhh, pov, ppov, pfb, pfb10, p18und, p60up) %>%
   mutate(across(-c(year, county), as.numeric)) %>%
   left_join(n_coops, by = "TRTID10") %>%
-  mutate(ncoops = if_else(is.na(ncoops), 0, ncoops))
+  mutate(ncoops = if_else(is.na(ncoops), 0, ncoops),
+         ncoopunits = if_else(is.na(ncoopunits), 0, ncoopunits))
 
 
 ## 2020 ####
@@ -390,7 +416,8 @@ tract_2020 <- right_join(tract_2020, LTDB_2015_2019_sample, by = "TRTID10") %>%
          mrent, pcol, phs, str30old, hh10old, fhh, pov, ppov, pfb, pfb10, p18und, p60up) %>%
   mutate(across(-c(year, county), as.numeric)) %>%
   left_join(n_coops, by = "TRTID10") %>%
-  mutate(ncoops = if_else(is.na(ncoops), 0, ncoops))
+  mutate(ncoops = if_else(is.na(ncoops), 0, ncoops),
+         ncoopunits = if_else(is.na(ncoopunits), 0, ncoopunits))
 
 ## Panel data ####
 # combining all years
@@ -430,7 +457,9 @@ crime <- read_csv("data/crime_clean.csv") %>%
   rename(year = Year) %>%
   mutate(year = as.character(year))
 
-tract <- left_join(tract, crime, by = c("year", "TRTID10"))
+tract <- left_join(tract, crime, by = c("year", "TRTID10")) %>%
+  left_join(cdf, by = "year") %>%
+  mutate(hinc20 = hinc * CPIAUCSL)
 
 
 # Joins ####

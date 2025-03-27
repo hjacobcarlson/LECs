@@ -1,20 +1,5 @@
 library(tidyverse)
-library(quantmod)
 
-# Functions ####
-
-# To adjust HH Incomes for Inflation
-
-# Adjust median incomes to 2015 dollars
-getSymbols("CPIAUCSL", src='FRED') #Consumer Price Index for All Urban Consumers: All Items
-#[1] "CPIAUCSL"
-
-avg.cpi <- apply.yearly(CPIAUCSL, mean)
-
-cf <- as.numeric(avg.cpi['2020'])/avg.cpi #using 2020 as the base year
-cdf <- as.data.frame(cf)
-cdf$LastDayOfYear <- rownames(cdf)
-cdf$year <- sapply(cdf$LastDayOfYear, FUN=function(x) as.numeric(substr(x, 1, 4)))
 
 
 # Weighted mean to fully drop NAs
@@ -34,17 +19,13 @@ weighted_mean <- function(x, w, ..., na.rm = FALSE){
 
 # Read in Data ####
 
-# Coops
-coops <-  read_csv("data/coops7020.csv") %>%
-  left_join(cdf, by = "year") %>%
-  mutate(hinc20 = hinc * CPIAUCSL)
 
 # Tracts
 tracts <- read_csv("data/tract.csv") %>%
-  left_join(cdf, by = "year") %>%
-  mutate(hinc20 = hinc * CPIAUCSL)
+  mutate(ptotfel = (totfel/pop) * 1000)
 
 # Calculate means by coops, multifamily units ####
+## Full city ####
 
 # Coops
 coops.w <- tracts %>%
@@ -68,7 +49,8 @@ coops.w <- tracts %>%
             fb.m = weighted_mean(pfb, ncoops, na.rm = TRUE),
             fb10.m = weighted_mean(pfb10, ncoops, na.rm = TRUE),
             n18und.m = weighted_mean(p18und, ncoops, na.rm = TRUE),
-            n60up.m = weighted_mean(p60up, ncoops, na.rm = TRUE)) %>%
+            n60up.m = weighted_mean(p60up, ncoops, na.rm = TRUE),
+            ptotfel.m = weighted_mean(ptotfel, ncoops, na.rm = TRUE)) %>%
   mutate(geog = "Coops")
 
 # Multifamily
@@ -93,13 +75,78 @@ multi.w <- tracts %>%
             fb.m = weighted_mean(pfb, multi, na.rm = TRUE),
             fb10.m = weighted_mean(pfb10, multi, na.rm = TRUE),
             n18und.m = weighted_mean(p18und, multi, na.rm = TRUE),
-            n60up.m = weighted_mean(p60up, multi, na.rm = TRUE)) %>%
+            n60up.m = weighted_mean(p60up, multi, na.rm = TRUE),
+            ptotfel.m = weighted_mean(ptotfel, multi, na.rm = TRUE)) %>%
   mutate(geog = "Multifamily")
 
 
 
 
 combined <- bind_rows(coops.w, multi.w) %>% 
+  pivot_longer(c(contains(".m"), hinc20, mrent), names_to = "var", values_to = "percent")
+
+
+## By select counties ####
+
+
+# Coops
+coops.w_co <- tracts %>%
+  filter(pop > 500) %>%
+  filter(!county %in% c("Queens County", "Richmond County")) %>%
+  group_by(year, county) %>%
+  summarize(hinc20 = weighted_mean(hinc20, ncoops, na.rm = TRUE),
+            powner.m = weighted_mean(powner, ncoops, na.rm = TRUE),
+            pwht.m = weighted_mean(pwht, ncoops, na.rm = TRUE),
+            pblk.m = weighted_mean(pblk, ncoops, na.rm = TRUE),
+            phisp.m = weighted_mean(phisp, ncoops, na.rm = TRUE),
+            pop.m = weighted_mean(pop, ncoops, na.rm = TRUE),
+            unemp.m = weighted_mean(punemp, ncoops, na.rm = TRUE),
+            mrent = weighted_mean(mrent, ncoops, na.rm = TRUE),
+            pcol.m = weighted_mean(pcol, ncoops, na.rm = TRUE),
+            phs.m = weighted_mean(phs, ncoops, na.rm = TRUE),
+            str30.m = weighted_mean(str30old, ncoops, na.rm = TRUE),
+            hh10old.m = weighted_mean(hh10old, ncoops, na.rm = TRUE),
+            fhh.m = weighted_mean(fhh, ncoops, na.rm = TRUE),
+            pov.m = weighted_mean(pov, ncoops, na.rm = TRUE),
+            ppov.m = weighted_mean(ppov, ncoops, na.rm = TRUE),
+            fb.m = weighted_mean(pfb, ncoops, na.rm = TRUE),
+            fb10.m = weighted_mean(pfb10, ncoops, na.rm = TRUE),
+            n18und.m = weighted_mean(p18und, ncoops, na.rm = TRUE),
+            n60up.m = weighted_mean(p60up, ncoops, na.rm = TRUE),
+            ptotfel.m = weighted_mean(ptotfel, ncoops, na.rm = TRUE)) %>%
+  mutate(geog = "Coops")
+
+# Multifamily
+multi.w_co <- tracts %>%
+  filter(pop > 500) %>%
+  filter(!county %in% c("Queens County", "Richmond County")) %>%
+  group_by(year, county) %>%
+  summarize(hinc20 = weighted_mean(hinc20, multi, na.rm = TRUE),
+            powner.m = weighted_mean(powner, multi, na.rm = TRUE),
+            pwht.m = weighted_mean(pwht, multi, na.rm = TRUE),
+            pblk.m = weighted_mean(pblk, multi, na.rm = TRUE),
+            phisp.m = weighted_mean(phisp, multi, na.rm = TRUE),
+            pop.m = weighted_mean(pop, multi, na.rm = TRUE),
+            unemp.m = weighted_mean(punemp, multi, na.rm = TRUE),
+            mrent = weighted_mean(mrent, multi, na.rm = TRUE),
+            pcol.m = weighted_mean(pcol, multi, na.rm = TRUE),
+            phs.m = weighted_mean(phs, multi, na.rm = TRUE),
+            str30.m = weighted_mean(str30old, multi, na.rm = TRUE),
+            hh10old.m = weighted_mean(hh10old, multi, na.rm = TRUE),
+            fhh.m = weighted_mean(fhh, multi, na.rm = TRUE),
+            pov.m = weighted_mean(pov, multi, na.rm = TRUE),
+            ppov.m = weighted_mean(ppov, multi, na.rm = TRUE),
+            fb.m = weighted_mean(pfb, multi, na.rm = TRUE),
+            fb10.m = weighted_mean(pfb10, multi, na.rm = TRUE),
+            n18und.m = weighted_mean(p18und, multi, na.rm = TRUE),
+            n60up.m = weighted_mean(p60up, multi, na.rm = TRUE),
+            ptotfel.m = weighted_mean(ptotfel, multi, na.rm = TRUE)) %>%
+  mutate(geog = "Multifamily")
+
+
+
+
+combined_co <- bind_rows(coops.w_co, multi.w_co) %>% 
   pivot_longer(c(contains(".m"), hinc20, mrent), names_to = "var", values_to = "percent")
 
 
@@ -166,66 +213,6 @@ ggsave(p, file = "out/gent.pdf",
        width = 5.75)
 
 
-# By counties ####
-
-
-# Coops
-coops.w_co <- tracts %>%
-  filter(pop > 500) %>%
-  filter(!county %in% c("Queens County", "Richmond County")) %>%
-  group_by(year, county) %>%
-  summarize(hinc20 = weighted_mean(hinc20, ncoops, na.rm = TRUE),
-            powner.m = weighted_mean(powner, ncoops, na.rm = TRUE),
-            pwht.m = weighted_mean(pwht, ncoops, na.rm = TRUE),
-            pblk.m = weighted_mean(pblk, ncoops, na.rm = TRUE),
-            phisp.m = weighted_mean(phisp, ncoops, na.rm = TRUE),
-            pop.m = weighted_mean(pop, ncoops, na.rm = TRUE),
-            unemp.m = weighted_mean(punemp, ncoops, na.rm = TRUE),
-            mrent = weighted_mean(mrent, ncoops, na.rm = TRUE),
-            pcol.m = weighted_mean(pcol, ncoops, na.rm = TRUE),
-            phs.m = weighted_mean(phs, ncoops, na.rm = TRUE),
-            str30.m = weighted_mean(str30old, ncoops, na.rm = TRUE),
-            hh10old.m = weighted_mean(hh10old, ncoops, na.rm = TRUE),
-            fhh.m = weighted_mean(fhh, ncoops, na.rm = TRUE),
-            pov.m = weighted_mean(pov, ncoops, na.rm = TRUE),
-            ppov.m = weighted_mean(ppov, ncoops, na.rm = TRUE),
-            fb.m = weighted_mean(pfb, ncoops, na.rm = TRUE),
-            fb10.m = weighted_mean(pfb10, ncoops, na.rm = TRUE),
-            n18und.m = weighted_mean(p18und, ncoops, na.rm = TRUE),
-            n60up.m = weighted_mean(p60up, ncoops, na.rm = TRUE)) %>%
-  mutate(geog = "Coops")
-
-# Multifamily
-multi.w_co <- tracts %>%
-  filter(pop > 500) %>%
-  filter(!county %in% c("Queens County", "Richmond County")) %>%
-  group_by(year, county) %>%
-  summarize(hinc20 = weighted_mean(hinc20, multi, na.rm = TRUE),
-            powner.m = weighted_mean(powner, multi, na.rm = TRUE),
-            pwht.m = weighted_mean(pwht, multi, na.rm = TRUE),
-            pblk.m = weighted_mean(pblk, multi, na.rm = TRUE),
-            phisp.m = weighted_mean(phisp, multi, na.rm = TRUE),
-            pop.m = weighted_mean(pop, multi, na.rm = TRUE),
-            unemp.m = weighted_mean(punemp, multi, na.rm = TRUE),
-            mrent = weighted_mean(mrent, multi, na.rm = TRUE),
-            pcol.m = weighted_mean(pcol, multi, na.rm = TRUE),
-            phs.m = weighted_mean(phs, multi, na.rm = TRUE),
-            str30.m = weighted_mean(str30old, multi, na.rm = TRUE),
-            hh10old.m = weighted_mean(hh10old, multi, na.rm = TRUE),
-            fhh.m = weighted_mean(fhh, multi, na.rm = TRUE),
-            pov.m = weighted_mean(pov, multi, na.rm = TRUE),
-            ppov.m = weighted_mean(ppov, multi, na.rm = TRUE),
-            fb.m = weighted_mean(pfb, multi, na.rm = TRUE),
-            fb10.m = weighted_mean(pfb10, multi, na.rm = TRUE),
-            n18und.m = weighted_mean(p18und, multi, na.rm = TRUE),
-            n60up.m = weighted_mean(p60up, multi, na.rm = TRUE)) %>%
-  mutate(geog = "Multifamily")
-
-
-
-
-combined_co <- bind_rows(coops.w_co, multi.w_co) %>% 
-  pivot_longer(c(contains(".m"), hinc20, mrent), names_to = "var", values_to = "percent")
 
 # GRAPHS ####
 p <- combined_co %>%
