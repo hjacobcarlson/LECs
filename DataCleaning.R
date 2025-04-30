@@ -32,7 +32,7 @@ census_2010_shp <- st_read("data/nyu_2451_34505/nyu_2451_34505.shp") %>%
 
 
 # UHAB Coop Locations (full UHAB data, v1)
-coops <- read_csv("data/NY Co-op Data (1).csv") %>%
+coops <- read_csv("data/NY Co-op Data(Sheet1).csv") %>%
   filter(!is.na(ID)) %>%
   filter(!is.na(LONG)) %>%
   filter(!Type %in% c("Affordable, Former HUD 213", "Senior", "Student co-op")) # omitting some types of "coops", may change later
