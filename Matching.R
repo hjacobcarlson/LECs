@@ -42,12 +42,28 @@ manhattan_address <- select(manhattan_rent, `Address...2`, "Neighborhood...3")
 ny_address <- bind_rows(bronx_address, manhattan_address, brooklyn_address)
 ny_address <- ny_address %>% mutate(Address = str_squish(Address))
 
+
 coops_clean_test <- coops_cleaned %>%
   rename(Address = street_address) %>%
   select(Address, Type) 
 
+#### fixing addresses
+
+coops_clean_test$Address <- str_replace_all(coops_clean_test$Address, "TIFFA", "TIFFANY") 
+coops_clean_test$Address <- str_replace_all(coops_clean_test$Address, "WEST WEST", "WEST") 
+coops_clean_test$Address <- str_replace_all(coops_clean_test$Address, "\\bE\\b", "EAST")
+coops_clean_test$Address <- str_replace_all(coops_clean_test$Address, " ST ", " STREET ") 
+coops_clean_test$Address <- str_replace_all(coops_clean_test$Address, " STREET NICHOLAS ", " ST NICHOLAS ") 
+
+
+
 coops_clean_test <- coops_clean_test %>%
   mutate(Address = str_trim(Address, side = "right")) 
 
-coops_rent <- left_join(coops_clean_test, ny_address)
+
+coops_rent <- left_join(coops_clean_test, ny_address) 
+
+write.csv(coops_rent, "coopsrent.csv", row.names = FALSE) 
+
+
 
