@@ -1,5 +1,5 @@
 "Address","Type","Neighborhood","Year Built"
-"1 BARKER ST MT. KISCO","Limited-equity",NA,NA
+"1 BARKER STREET MT. KISCO","Limited-equity",NA,NA
 "1 COOPER SQUARE","Income-restricted, HDFC",NA,NA
 "1 MORNINGSIDE AVENUE","Income-restricted, HDFC",NA,NA
 "10 MORNINGSIDE AVENUE","Income-restricted, HDFC",NA,NA
@@ -15,7 +15,7 @@
 "1003 EAST 174 STREET","Income-restricted, HDFC","CROTONA PARK",NA
 "1005 PUTNAM AVENUE","Income-restricted, HDFC",NA,NA
 "1007 EAST 174 STREET","Income-restricted, HDFC",NA,NA
-"101 CLARK ST","Limited-equity, Mitchell Lama",NA,NA
+"101 CLARK STREET","Limited-equity, Mitchell Lama",NA,NA
 "101 LENOX AVENUE","Income-restricted, HDFC",NA,NA
 "101 WEST 147 STREET","Limited-equity, Mitchell Lama",NA,NA
 "1012 LONGFELLOW AVENUE","Income-restricted, HDFC",NA,NA
@@ -24,7 +24,7 @@
 "1015 SUMMIT AVENUE","Income-restricted, HDFC","HIGHBRIDGE/MORRIS HEIGHTS",NA
 "1019 LONGWOOD AVENUE","Income-restricted, HDFC","MORRISANIA/LONGWOOD",NA
 "102 AVENUE B","Income-restricted, HDFC",NA,NA
-"1020 TIFFA STREET","Income-restricted, HDFC",NA,NA
+"1020 TIFFANY STREET","Income-restricted, HDFC","MORRISANIA/LONGWOOD",NA
 "102-00 SHORE FRONT PARKWAY","Limited-equity, Mitchell Lama",NA,NA
 "1025 LEGGETT AVENUE","Income-restricted, HDFC","MORRISANIA/LONGWOOD",NA
 "103 CLINTON STREET","Income-restricted, HDFC","LOWER EAST SIDE",NA
@@ -76,7 +76,7 @@
 "1096 WEST FARMS ROAD","Income-restricted, HDFC","MORRISANIA/LONGWOOD",NA
 "11 EAST 131 STREET","Income-restricted, HDFC",NA,NA
 "11 FORT GEORGE HILL","Limited-equity, Mitchell Lama",NA,NA
-"11 ST JAMES PLACE","Limited-equity, Mitchell Lama",NA,NA
+"11 STREET JAMES PLACE","Limited-equity, Mitchell Lama",NA,NA
 "11 ST NICHOLAS AVENUE","Income-restricted, HDFC",NA,NA
 "11 WEST 107 STREET","Income-restricted, HDFC",NA,NA
 "11 WEST 108 STREET","Income-restricted, HDFC","MANHATTAN VALLEY",NA
@@ -120,10 +120,10 @@
 "1185 ANDERSON AVENUE","Income-restricted, HDFC",NA,NA
 "1185 FULTON AVENUE","Income-restricted, HDFC",NA,NA
 "119 GRAND STREET","Income-restricted, HDFC",NA,NA
-"1198 PRESIDENT ST","Limited-equity, Mitchell Lama",NA,NA
+"1198 PRESIDENT STREET","Limited-equity, Mitchell Lama",NA,NA
 "12 BLEECKER STREET","Income-restricted, HDFC","BUSHWICK",1931
 "12 EAST 132 STREET","Income-restricted, HDFC",NA,NA
-"12 ST MARKS PLACE","Income-restricted, HDFC",NA,NA
+"12 STREET MARKS PLACE","Income-restricted, HDFC",NA,NA
 "12 WEST 107 STREET","Income-restricted, HDFC",NA,NA
 "120 BERGEN STREET","Income-restricted, HDFC",NA,NA
 "1200 WOODYCREST AVENUE","Income-restricted, HDFC",NA,NA
@@ -166,7 +166,7 @@
 "130 WEST 26 STREET","Income-restricted, HDFC",NA,NA
 "1303 DEAN STREET","Income-restricted, HDFC",NA,NA
 "1304 PACIFIC STREET","Income-restricted, HDFC","CROWN HEIGHTS",1945
-"131 EAST 101 ST","Income-restricted, HDFC",NA,NA
+"131 EAST 101 STREET","Income-restricted, HDFC",NA,NA
 "1312 PACIFIC STREET","Income-restricted, HDFC",NA,NA
 "1314 OAKLEY STREET","Income-restricted, HDFC",NA,NA
 "1316 STERLING PLACE","Income-restricted, HDFC",NA,NA
@@ -254,7 +254,7 @@
 "1551 PARK PLACE","Income-restricted, HDFC","CROWN HEIGHTS",1910
 "156 EAST 97 STREET","Income-restricted, HDFC","HARLEM-EAST",NA
 "156 NASSAU AVENUE","Income-restricted, HDFC",NA,NA
-"156 ST MARKS AVENUE","Income-restricted, HDFC",NA,NA
+"156 STREET MARKS AVENUE","Income-restricted, HDFC",NA,NA
 "156-10 RIVERSIDE DRIVE WEST","Limited-equity, Mitchell Lama",NA,NA
 "156-11 AGUILAR AVENUE","Limited-equity, Mitchell Lama",NA,NA
 "157 BROOME STREET","Income-restricted, HDFC",NA,NA
@@ -456,7 +456,7 @@
 "210 FORSYTH STREET","Income-restricted, HDFC",NA,NA
 "210 WEST 105 STREET","Income-restricted, HDFC",NA,NA
 "211 FRANKLIN STREET","Income-restricted, HDFC",NA,NA
-"211 ST JAMES PLACE","Income-restricted, HDFC","CLINTON HILL",1930
+"211 STREET JAMES PLACE","Income-restricted, HDFC",NA,NA
 "211 WEST 10 STREET","Income-restricted, HDFC","GREENWICH VILLAGE-WEST",NA
 "211 WEST 135 STREET","Income-restricted, HDFC",NA,NA
 "211 WEST 144 STREET","Income-restricted, HDFC",NA,NA
@@ -508,7 +508,7 @@
 "225 AVENUE T","Limited-equity, Mitchell Lama","GRAVESEND",1960
 "225 EAST 4 STREET","Income-restricted, HDFC","ALPHABET CITY",NA
 "2250 WEBSTER AVENUE","Income-restricted, HDFC","BATHGATE",NA
-"226  WEST 111 ST","Income-restricted, HDFC",NA,NA
+"226  WEST 111 STREET","Income-restricted, HDFC",NA,NA
 "226 WEST 113 STREET","Income-restricted, HDFC","HARLEM-CENTRAL",NA
 "2268 AMSTERDAM AVENUE","Income-restricted, HDFC",NA,NA
 "227 EAST 14 STREET","Income-restricted, HDFC","GRAMERCY",NA
@@ -556,7 +556,7 @@
 "239 SOUTH 3 STREET","Income-restricted, HDFC",NA,NA
 "24 CLINTON STREET","Income-restricted, HDFC",NA,NA
 "24 COOPER STREET","Income-restricted, HDFC","INWOOD",NA
-"24 ST MARKS PLACE","Income-restricted, HDFC",NA,NA
+"24 STREET MARKS PLACE","Income-restricted, HDFC",NA,NA
 "240 ECHO PLACE","Income-restricted, HDFC","MOUNT HOPE/MOUNT EDEN",NA
 "240 NAGLE AVENUE","Limited-equity, Mitchell Lama",NA,NA
 "240 WEST 112 STREET","Income-restricted, HDFC",NA,NA
@@ -612,7 +612,7 @@
 "272 ALEXANDER AVENUE","Income-restricted, HDFC",NA,NA
 "272 GATES AVENUE","Income-restricted, HDFC","BEDFORD STUYVESANT",1930
 "272 SOUTH 5 STREET","Income-restricted, HDFC",NA,NA
-"272 ST JAMES PLACE","Income-restricted, HDFC",NA,NA
+"272 STREET JAMES PLACE","Income-restricted, HDFC",NA,NA
 "2728 BROADWAY","Income-restricted, HDFC","UPPER WEST SIDE (96-116)",NA
 "274 ALEXANDER AVENUE","Income-restricted, HDFC",NA,NA
 "274 EAST 194 STREET","Income-restricted, HDFC","FORDHAM",NA
@@ -637,7 +637,7 @@
 "29 WEST 119 STREET","Income-restricted, HDFC","HARLEM-CENTRAL",NA
 "290 BROOME STREET","Income-restricted, HDFC",NA,NA
 "290 EAST 2 STREET","Income-restricted, HDFC","ALPHABET CITY",NA
-"290 W 232 ST","Limited-equity, Mitchell Lama",NA,NA
+"290 W 232 STREET","Limited-equity, Mitchell Lama",NA,NA
 "292 EAST 3 STREET","Income-restricted, HDFC",NA,NA
 "295 STANHOPE STREET","Income-restricted, HDFC",NA,NA
 "298 EAST 3 STREET","Income-restricted, HDFC",NA,NA
@@ -683,7 +683,7 @@
 "318 UNION AVENUE","Income-restricted, HDFC",NA,NA
 "318 WEST 36 STREET","Income-restricted, HDFC","FASHION",NA
 "319 BERRIMAN STREET","Income-restricted, HDFC",NA,NA
-"319 E 24 ST","Limited-equity",NA,NA
+"319 EAST 24 STREET","Limited-equity","KIPS BAY",NA
 "319 WEST 47 STREET","Income-restricted, HDFC","MIDTOWN WEST",NA
 "32 EAST 2 STREET","Income-restricted, HDFC","EAST VILLAGE",NA
 "32 HERKIMER STREET","Income-restricted, HDFC",NA,NA
@@ -719,8 +719,8 @@
 "333 LAFAYETTE AVENUE","Limited-equity, Mitchell Lama","CLINTON HILL",1963
 "336 EAST 4 STREET","Income-restricted, HDFC","ALPHABET CITY",NA
 "340 MANHATTAN AVENUE","Income-restricted, HDFC",NA,NA
-"340 SOUTH REGENT ST PORT CHESTER","Limited-equity",NA,NA
-"340 ST MARKS AVENUE","Income-restricted, HDFC",NA,NA
+"340 SOUTH REGENT STREET PORT CHESTER","Limited-equity",NA,NA
+"340 STREET MARKS AVENUE","Income-restricted, HDFC",NA,NA
 "3400 FT INDEPENDENCE STREET","Limited-equity, Mitchell Lama","KINGSBRIDGE/JEROME PARK",NA
 "3400 PAUL AVENUE","Limited-equity, Mitchell Lama","KINGSBRIDGE/JEROME PARK",NA
 "3401 BROADWAY","Income-restricted, HDFC",NA,NA
@@ -756,7 +756,7 @@
 "357E EAST 201 STREET","Income-restricted, HDFC",NA,NA
 "36 HAWTHORNE STREET","Income-restricted, HDFC",NA,NA
 "36 WEST 138 STREET","Income-restricted, HDFC",NA,NA
-"364 ST ANNS AVENUE","Income-restricted, HDFC",NA,NA
+"364 STREET ANNS AVENUE","Income-restricted, HDFC",NA,NA
 "364 WEST 121 STREET","Income-restricted, HDFC",NA,NA
 "367 EAST 10 STREET","Income-restricted, HDFC","ALPHABET CITY",NA
 "3679 BROADWAY","Income-restricted, HDFC",NA,NA
@@ -842,7 +842,7 @@
 "428 EAST 157 STREET","Income-restricted, HDFC",NA,NA
 "429 EAST 157 STREET","Income-restricted, HDFC",NA,NA
 "43 5 AVENUE","Income-restricted, HDFC","GREENWICH VILLAGE-CENTRAL",NA
-"43 ST JOHNS PLACE","Income-restricted, HDFC",NA,NA
+"43 STREET JOHNS PLACE","Income-restricted, HDFC",NA,NA
 "430 EAST 149 STREET","Income-restricted, HDFC",NA,NA
 "430 LENOX AVENUE","Income-restricted, HDFC",NA,NA
 "430 ROGERS AVENUE","Income-restricted, HDFC","FLATBUSH-LEFFERTS GARDEN",1907
@@ -899,7 +899,7 @@
 "473 17 STREET","Income-restricted, HDFC",NA,NA
 "475 17 STREET","Income-restricted, HDFC",NA,NA
 "475 PROSPECT PLACE","Income-restricted, HDFC",NA,NA
-"476 WEST WEST 141 STREET","Income-restricted, HDFC",NA,NA
+"476 WEST 141 STREET","Income-restricted, HDFC",NA,NA
 "477 17 STREET","Income-restricted, HDFC",NA,NA
 "479 VAN BUREN STREET","Income-restricted, HDFC","BEDFORD STUYVESANT",1931
 "48 WEST 119 STREET","Income-restricted, HDFC",NA,NA
@@ -1033,7 +1033,7 @@
 "538 WEST 148 STREET","Income-restricted, HDFC",NA,NA
 "539 WEST 160 STREET","Income-restricted, HDFC","WASHINGTON HEIGHTS LOWER",NA
 "54 EAST 129 STREET","Income-restricted, HDFC",NA,NA
-"54 ST JOHNS PLACE","Income-restricted, HDFC",NA,NA
+"54 STREET JOHNS PLACE","Income-restricted, HDFC",NA,NA
 "540 WEST 146 STREET","Income-restricted, HDFC","HARLEM-UPPER",NA
 "541 WEST 133 STREET","Income-restricted, HDFC","HARLEM-WEST",NA
 "543 GRAHAM AVENUE","Income-restricted, HDFC",NA,NA
@@ -1048,7 +1048,7 @@
 "548 WEST 156 STREET","Income-restricted, HDFC",NA,NA
 "549 WEST 163 STREET","Income-restricted, HDFC","WASHINGTON HEIGHTS LOWER",NA
 "55 AVENUE C","Income-restricted, HDFC","ALPHABET CITY",NA
-"55 DOWNING ST","Income-restricted, HDFC",NA,NA
+"55 DOWNING STREET","Income-restricted, HDFC",NA,NA
 "55 WEST 119 STREET","Income-restricted, HDFC",NA,NA
 "550 FT WASHINGTON AVENUE","Income-restricted, HDFC","WASHINGTON HEIGHTS UPPER",NA
 "551 WEST 157 STREET","Income-restricted, HDFC",NA,NA
@@ -1064,7 +1064,7 @@
 "560 WEST 186 STREET","Income-restricted, HDFC","WASHINGTON HEIGHTS UPPER",NA
 "562 WEST 149 STREET","Income-restricted, HDFC","HARLEM-UPPER",NA
 "563 WEST 150 STREET","Income-restricted, HDFC","HARLEM-UPPER",NA
-"565  WEST 125 ST","Income-restricted, HDFC",NA,NA
+"565  WEST 125 STREET","Income-restricted, HDFC",NA,NA
 "566 WEST 159 STREET","Income-restricted, HDFC","WASHINGTON HEIGHTS LOWER",NA
 "569 STERLING PLACE","Income-restricted, HDFC",NA,NA
 "57 EAST 4 STREET","Income-restricted, HDFC",NA,NA
@@ -1086,7 +1086,7 @@
 "587 DUMONT AVENUE","Income-restricted, HDFC",NA,NA
 "588 ROGERS AVENUE","Income-restricted, HDFC",NA,NA
 "59 MORNINGSIDE AVENUE","Income-restricted, HDFC",NA,NA
-"59 ST JOHNS PLACE","Income-restricted, HDFC",NA,NA
+"59 STREET JOHNS PLACE","Income-restricted, HDFC",NA,NA
 "59 WEST 87 STREET","Income-restricted, HDFC",NA,NA
 "590 PARKSIDE AVENUE","Income-restricted, HDFC","FLATBUSH-CENTRAL",1931
 "590 SOUTHERN BOULEVARD","Income-restricted, HDFC","MORRISANIA/LONGWOOD",NA
@@ -1103,7 +1103,7 @@
 "609 COLUMBUS AVENUE","Income-restricted, HDFC","UPPER WEST SIDE (79-96)",NA
 "61 COLUMBIA STREET","Limited-equity, Mitchell Lama",NA,NA
 "61 MORNINGSIDE AVENUE","Income-restricted, HDFC",NA,NA
-"61 ST JOHNS PLACE","Income-restricted, HDFC",NA,NA
+"61 STREET JOHNS PLACE","Income-restricted, HDFC",NA,NA
 "61 WEST 105 STREET","Income-restricted, HDFC",NA,NA
 "61 WEST 87 STREET","Income-restricted, HDFC",NA,NA
 "610 EAST 5 STREET","Income-restricted, HDFC","ALPHABET CITY",NA
@@ -1130,7 +1130,7 @@
 "63 EAST 4 STREET","Income-restricted, HDFC",NA,NA
 "63 FRANKLIN STREET","Income-restricted, HDFC",NA,NA
 "63 MORNINGSIDE AVENUE","Income-restricted, HDFC",NA,NA
-"63 ST JOHNS PLACE","Income-restricted, HDFC",NA,NA
+"63 STREET JOHNS PLACE","Income-restricted, HDFC",NA,NA
 "63 WEST 87 STREET","Income-restricted, HDFC",NA,NA
 "630 EAST 170 STREET","Income-restricted, HDFC","MORRISANIA/LONGWOOD",NA
 "631 ACADEMY STREET","Income-restricted, HDFC",NA,NA
@@ -1159,15 +1159,15 @@
 "65 JAVA STREET","Income-restricted, HDFC",NA,NA
 "65 MORNINGSIDE AVENUE","Income-restricted, HDFC",NA,NA
 "65 NORTH 8 STREET","Income-restricted, HDFC",NA,NA
-"65 ST JOHNS PLACE","Income-restricted, HDFC",NA,NA
-"65 W 90 ST","Limited-equity",NA,NA
+"65 STREET JOHNS PLACE","Income-restricted, HDFC",NA,NA
+"65 W 90 STREET","Limited-equity",NA,NA
 "65 WEST 87 STREET","Income-restricted, HDFC",NA,NA
 "651 MADISON STREET","Income-restricted, HDFC","BEDFORD STUYVESANT",1931
 "654 GRAND STREET","Income-restricted, HDFC","WILLIAMSBURG-EAST",1920
 "655 RIVERSIDE DRIVE","Income-restricted, HDFC",NA,NA
-"65-52 160TH ST FLUSHING","Limited-equity",NA,NA
-"65-83 160TH ST FLUSHING","Limited-equity",NA,NA
-"65-94 162ND ST FLUSHING","Limited-equity",NA,NA
+"65-52 160TH STREET FLUSHING","Limited-equity",NA,NA
+"65-83 160TH STREET FLUSHING","Limited-equity",NA,NA
+"65-94 162ND STREET FLUSHING","Limited-equity",NA,NA
 "66 WEST 94 STREET","Limited-equity, Mitchell Lama",NA,NA
 "660 ST NICHOLAS AVENUE","Income-restricted, HDFC","HARLEM-CENTRAL",NA
 "664 WEST 161 STREET","Income-restricted, HDFC","WASHINGTON HEIGHTS LOWER",NA
@@ -1176,7 +1176,7 @@
 "67 EAST 4 STREET","Income-restricted, HDFC",NA,NA
 "67 JAVA STREET","Income-restricted, HDFC",NA,NA
 "67 MALCOLM X BOULEVARD","Income-restricted, HDFC",NA,NA
-"67 ST JOHNS PLACE","Income-restricted, HDFC",NA,NA
+"67 STREET JOHNS PLACE","Income-restricted, HDFC",NA,NA
 "67 ST NICHOLAS AVENUE","Income-restricted, HDFC","HARLEM-CENTRAL",NA
 "67 WEST 87 STREET","Income-restricted, HDFC",NA,NA
 "671 KELLY STREET","Income-restricted, HDFC",NA,NA
@@ -1201,7 +1201,7 @@
 "7 WEST 92 STREET","Income-restricted, HDFC","UPPER WEST SIDE (79-96)",NA
 "7.5 2 AVENUE","Income-restricted, HDFC",NA,NA
 "70 MORNINGSIDE AVENUE","Income-restricted, HDFC",NA,NA
-"70 ST JOHNS PLACE","Income-restricted, HDFC",NA,NA
+"70 STREET JOHNS PLACE","Income-restricted, HDFC",NA,NA
 "70 WEST 105 STREET","Income-restricted, HDFC",NA,NA
 "70 WEST 108 STREET","Income-restricted, HDFC","MANHATTAN VALLEY",NA
 "700 COLUMBUS AVENUE","Limited-equity, Mitchell Lama",NA,NA
@@ -1270,7 +1270,7 @@
 "800 RIVERSIDE DRIVE","Income-restricted, HDFC","WASHINGTON HEIGHTS LOWER",NA
 "801 TILDEN STREET","Limited-equity, Mitchell Lama","WILLIAMSBRIDGE",NA
 "805 EAST 182 STREET","Income-restricted, HDFC",NA,NA
-"805 ST JOHNS PLACE","Income-restricted, HDFC",NA,NA
+"805 STREET JOHNS PLACE","Income-restricted, HDFC",NA,NA
 "81 HILLSIDE AVENUE","Limited-equity, Mitchell Lama",NA,NA
 "810 EAST 178 STREET","Income-restricted, HDFC","EAST TREMONT",NA
 "8100 SHORE FRONT PARKWAY","Limited-equity, Mitchell Lama",NA,NA
@@ -1299,7 +1299,7 @@
 "849 ST NICHOLAS AVENUE","Income-restricted, HDFC","HARLEM-UPPER",NA
 "85 SOUTH 9 STREET","Income-restricted, HDFC",NA,NA
 "850 SOUTHERN BOULEVARD","Income-restricted, HDFC","MORRISANIA/LONGWOOD",NA
-"850 ST MARKS AVENUE","Income-restricted, HDFC",NA,NA
+"850 STREET MARKS AVENUE","Income-restricted, HDFC",NA,NA
 "851 EAST TREMONT AVENUE","Income-restricted, HDFC","EAST TREMONT",NA
 "851 FOX STREET","Income-restricted, HDFC",NA,NA
 "854 INTERVALE AVENUE","Income-restricted, HDFC","MORRISANIA/LONGWOOD",NA
@@ -1356,7 +1356,7 @@
 "95 SOUTH 9 STREET","Income-restricted, HDFC",NA,NA
 "950 HOE AVENUE","Income-restricted, HDFC","MORRISANIA/LONGWOOD",NA
 "951 MANHATTAN AVENUE","Income-restricted, HDFC",NA,NA
-"952 ST MARKS AVENUE","Income-restricted, HDFC","CROWN HEIGHTS",1905
+"952 STREET MARKS AVENUE","Income-restricted, HDFC",NA,NA
 "962 ANDERSON AVENUE","Income-restricted, HDFC",NA,NA
 "962 EAST 172 STREET","Income-restricted, HDFC",NA,NA
 "964 ANDERSON AVENUE","Income-restricted, HDFC",NA,NA
@@ -1365,8 +1365,8 @@
 "969 PUTNAM AVENUE","Income-restricted, HDFC",NA,NA
 "970 GLENMORE AVENUE","Income-restricted, HDFC",NA,NA
 "971 KELLY STREET","Income-restricted, HDFC",NA,NA
-"971 ST MARKS AVENUE","Income-restricted, HDFC",NA,NA
-"973 ST MARKS AVENUE","Income-restricted, HDFC",NA,NA
+"971 STREET MARKS AVENUE","Income-restricted, HDFC",NA,NA
+"973 STREET MARKS AVENUE","Income-restricted, HDFC",NA,NA
 "975 SUMMIT AVENUE","Income-restricted, HDFC",NA,NA
 "975 UNION AVENUE","Income-restricted, HDFC","MORRISANIA/LONGWOOD",NA
 "976 SIMPSON STREET","Income-restricted, HDFC",NA,NA

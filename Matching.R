@@ -54,7 +54,7 @@ coops_clean_test$Address <- str_replace_all(coops_clean_test$Address, "WEST WEST
 coops_clean_test$Address <- str_replace_all(coops_clean_test$Address, "\\bE\\b", "EAST")
 coops_clean_test$Address <- str_replace_all(coops_clean_test$Address, " ST ", " STREET ") 
 coops_clean_test$Address <- str_replace_all(coops_clean_test$Address, " STREET NICHOLAS ", " ST NICHOLAS ") 
-
+coops_clean_test$Address <- str_replace_all(coops_clean_test$Address, "4250 KATONAH AVENUE", "4260 KATONAH AVENUE") 
 
 
 coops_clean_test <- coops_clean_test %>%
