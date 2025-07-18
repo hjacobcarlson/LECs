@@ -4,14 +4,14 @@ library(dplyr)
 library(stringr)
 library(tidyverse)
 
-# creating new dataframes with the two categories of unmatched coops and matched coops
+# creating new dataframes with the two categories of unmatched coops and matched coops ####
 matched_coops <- coops_rent %>%
-  filter(!is.na(Neighborhood)) %>% rename(street_address = Address)
+  filter(!is.na(Neighborhood)) 
 
 unmatched_coops <- coops_rent %>% 
-  filter(is.na(Neighborhood)) %>% rename(street_address = Address)
+  filter(is.na(Neighborhood)) 
 
-#cleaning coops data to match with new data 
+#cleaning coops data to match with new data  #### 
 coops_2020 <- coops7020 %>% filter(year == 2020)
 
 
@@ -42,11 +42,16 @@ coops_2020$street_address<- str_replace_all(coops_2020$street_address, " ST ", "
 coops_2020$street_address<- str_replace_all(coops_2020$street_address, " STREET NICHOLAS ", " ST NICHOLAS ") 
 coops_2020$street_address<- str_replace_all(coops_2020$street_address, "4250 KATONAH AVENUE", "4260 KATONAH AVENUE") 
 
-
+# joining matched coops and unmatched coops seperately to our coop data from 2020 #### 
 matched_2020 <- left_join(matched_coops, coops_2020, by = "street_address" )
 unmatched_2020 <- left_join(unmatched_coops,coops_2020, by = "street_address")
 
-#matched map coding to clean for maps
+# looking for duplicates #### 
+look <- unmatched_2020 %>%
+    group_by(street_address) %>%
+   summarize(n = n())
+
+#matched map coding to clean for maps ####
 
 maps_2020 <- coops_maps %>% select(NAME,geometry)
 matched_maps <- left_join(matched_2020, maps_2020, by = "NAME")
@@ -61,7 +66,7 @@ points <- matched_maps %>% select(geometry)
 census_shape_matched <- left_join(census_2010_shp,matched_2020)
 
 
-# unmatched map coding to clean for maps
+# unmatched map coding to clean for maps ####
 unmatched_maps <- left_join(unmatched_2020, maps_2020, by = "NAME")
 
 unmatched_maps <- unmatched_maps %>%
@@ -73,7 +78,7 @@ points_unmatched <- unmatched_maps %>% select(geometry)
 
 census_shape_unmatched <- left_join(census_2010_shp,unmatched_2020)
 
-#general location
+#general location ####
 
 ggplot() +
   geom_sf(data = census_shape_matched, fill = "gray90", color = "white", size = 0.2) +  # base NYC map
@@ -88,7 +93,7 @@ ggplot() +
   theme_minimal() +
   labs(title = "Map of Unmatched Coops with Points",
        caption = "Red dots = your data")
-# maps for pblk
+# maps for pblk ####
 
 ggplot() +
   # Base map: polygons filled by your external variable
@@ -122,7 +127,7 @@ ggplot() +
        color = "Point Group")
 
 
-#wht maps
+#wht maps ####
 ggplot() +
   # Base map: polygons filled by your external variable
   geom_sf(data = census_shape_matched, aes(fill = pwht), color = "white", size = 0.2) +
@@ -153,7 +158,7 @@ ggplot() +
        fill = "Percent White",
        color = "Point Group")
 
-#unemployed
+#unemployed maps ####
 ggplot() +
   # Base map: polygons filled by your external variable
   geom_sf(data = census_shape_matched, aes(fill = punemp), color = "white", size = 0.2) +
@@ -182,4 +187,4 @@ ggplot() +
   theme_minimal() +
   labs(title = "Percent Unemployed in Unmatched Coops",
        fill = "Percent Unemployed",
-       color = "Point Group")
+       color = "Point Group") 
