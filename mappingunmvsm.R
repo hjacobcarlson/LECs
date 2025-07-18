@@ -3,6 +3,7 @@ library(tidyverse)
 library(dplyr)
 library(stringr)
 library(tidyverse)
+library(ggplot2)
 
 # creating new dataframes with the two categories of unmatched coops and matched coops ####
 matched_coops <- coops_rent %>%
