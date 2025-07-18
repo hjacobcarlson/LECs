@@ -189,7 +189,7 @@ tract_90 <- read_csv("data/ltdb_std_all_fullcount/LTDB_Std_1990_fullcount.csv") 
          | county == "Richmond County" | county == "New York County") %>%
   mutate(TRTID10 = as.numeric(TRTID10))
 
-LTDB_1990_sample <- read_csv("data/ltdb_std_all_sample/ltdb_std_1990_sample.csv") %>%
+LTDB_1990_sample <- read_csv("data/ltdb_std_all_sample/LTDB_Std_1990_Sample.csv") %>%
   mutate(TRTID10 = as.numeric(TRTID10)) %>%
   select(-county)
 

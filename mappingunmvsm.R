@@ -183,4 +183,3 @@ ggplot() +
   labs(title = "Percent Unemployed in Unmatched Coops",
        fill = "Percent Unemployed",
        color = "Point Group")
-
