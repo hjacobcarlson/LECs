@@ -5,12 +5,7 @@ library(stringr)
 library(tidyverse)
 library(ggplot2)
 library(sf)
-# creating new dataframes with the two categories of unmatched coops and matched coops ####
-matched_coops <- coops_rent %>%
-  filter(!is.na(Neighborhood)) 
 
-unmatched_coops <- coops_rent %>% 
-  filter(is.na(Neighborhood)) 
 
 #cleaning coops data to match with new data  #### 
 coops_2020 <- coops7020 %>% filter(year == 2020)
@@ -43,167 +38,21 @@ coops_2020$street_address<- str_replace_all(coops_2020$street_address, " ST ", "
 coops_2020$street_address<- str_replace_all(coops_2020$street_address, " STREET NICHOLAS ", " ST NICHOLAS ") 
 coops_2020$street_address<- str_replace_all(coops_2020$street_address, "4250 KATONAH AVENUE", "4260 KATONAH AVENUE") 
 
-# joining matched coops and unmatched coops seperately to our coop data from 2020 #### 
-matched_2020 <- left_join(matched_coops, coops_2020, by = "street_address" )
-unmatched_2020 <- left_join(unmatched_coops,coops_2020, by = "street_address")
-
-# looking for duplicates #### 
-look <- unmatched_2020 %>%
-    group_by(street_address) %>%
-   summarize(n = n())
-
-#matched map coding to clean for maps ####
-
-maps_2020 <- coops_maps %>% select(NAME,geometry)
-matched_maps <- left_join(matched_2020, maps_2020, by = "NAME")
-
-matched_maps <- matched_maps %>%
-  distinct(street_address, .keep_all = TRUE)
-
-matched_maps <- st_as_sf(matched_maps)
-
-points <- matched_maps %>% select(geometry)
-
-census_shape_matched <- left_join(census_2010_shp,matched_2020)
+# creating column matched
+coopsr <- coops_rent %>% select(Neighborhood,street_address)
+coops_2020 <- left_join(coops_2020,coopsr) %>%   
+  mutate(matched = !is.na(Neighborhood))
 
 
-# unmatched map coding to clean for maps ####
-unmatched_maps <- left_join(unmatched_2020, maps_2020, by = "NAME")
-
-unmatched_maps <- unmatched_maps %>%
-  distinct(street_address, .keep_all = TRUE)
-
-unmatched_maps <- st_as_sf(unmatched_maps)
-
-points_unmatched <- unmatched_maps %>% select(geometry)
-
-census_shape_unmatched <- left_join(census_2010_shp,unmatched_2020)
-
-#general location ####
-
-ggplot() +
-  geom_sf(data = census_shape_matched, fill = "gray90", color = "white", size = 0.2) +  # base NYC map
-  geom_sf(data = points, color = "red", size = 2, alpha = 0.7) +             # your points
-  theme_minimal() +
-  labs(title = "Map of Matched Coops with Points",
-       caption = "Red dots = your data")
-
-ggplot() +
-  geom_sf(data = census_shape_unmatched, fill = "gray90", color = "white", size = 0.2) +  # base NYC map
-  geom_sf(data = points_unmatched, color = "red", size = 2, alpha = 0.7) +             # your points
-  theme_minimal() +
-  labs(title = "Map of Unmatched Coops with Points",
-       caption = "Red dots = your data")
-# maps for pblk ####
-
-ggplot() +
-  # Base map: polygons filled by your external variable
-  geom_sf(data = census_shape_matched, aes(fill = pblk), color = "white", size = 0.2) +
-  
-  # Points: plotted on top of the map
-  geom_sf(data = points, size = 2, alpha = 0.025, color = "white") +
-  
-  # Styling
-  scale_fill_viridis_c(option = "plasma", na.value = "gray90") +
-  scale_color_manual(values = c("blue", "red")) +  # customize as needed
-  theme_minimal() +
-  labs(title = "Percent Black in Matched Coops",
-       fill = "Percent Black",
-       color = "Point Group")
-
-
-ggplot() +
-  # Base map: polygons filled by your external variable
-  geom_sf(data = census_shape_unmatched, aes(fill = pblk), color = "white", size = 0.2) +
-  
-  # Points: plotted on top of the map
-  geom_sf(data = points_unmatched, size = 2, alpha = 0.025, color = "white") +
-  
-  # Styling
-  scale_fill_viridis_c(option = "plasma", na.value = "gray90") +
-  scale_color_manual(values = c("blue", "red")) +  # customize as needed
-  theme_minimal() +
-  labs(title = "Percent Black in Unmatched Coops",
-       fill = "Percent Black",
-       color = "Point Group")
-
-
-#wht maps ####
-ggplot() +
-  # Base map: polygons filled by your external variable
-  geom_sf(data = census_shape_matched, aes(fill = pwht), color = "white", size = 0.2) +
-  
-  # Points: plotted on top of the map
-  geom_sf(data = points, size = 2, alpha = 0.025, color = "white") +
-  
-  # Styling
-  scale_fill_viridis_c(option = "plasma", na.value = "gray90") +
-  scale_color_manual(values = c("blue", "red")) +  # customize as needed
-  theme_minimal() +
-  labs(title = "Percent White in Matched Coops",
-       fill = "Percent White",
-       color = "Point Group")
-
-ggplot() +
-  # Base map: polygons filled by your external variable
-  geom_sf(data = census_shape_unmatched, aes(fill = pwht), color = "white", size = 0.2) +
-  
-  # Points: plotted on top of the map
-  geom_sf(data = points_unmatched, size = 2, alpha = 0.025, color = "white") +
-  
-  # Styling
-  scale_fill_viridis_c(option = "plasma", na.value = "gray90") +
-  scale_color_manual(values = c("blue", "red")) +  # customize as needed
-  theme_minimal() +
-  labs(title = "Percent White in Unmatched Coops",
-       fill = "Percent White",
-       color = "Point Group")
-
-#unemployed maps ####
-ggplot() +
-  # Base map: polygons filled by your external variable
-  geom_sf(data = census_shape_matched, aes(fill = punemp), color = "white", size = 0.2) +
-  
-  # Points: plotted on top of the map
-  geom_sf(data = points, size = 2, alpha = 0.025, color = "white") +
-  
-  # Styling
-  scale_fill_viridis_c(option = "plasma", na.value = "gray90") +
-  scale_color_manual(values = c("blue", "red")) +  # customize as needed
-  theme_minimal() +
-  labs(title = "Percent Unemployed in Matched Coops",
-       fill = "Percent Unemployed",
-       color = "Point Group")
-
-ggplot() +
-  # Base map: polygons filled by your external variable
-  geom_sf(data = census_shape_unmatched, aes(fill = punemp), color = "white", size = 0.2) +
-  
-  # Points: plotted on top of the map
-  geom_sf(data = points_unmatched, size = 2, alpha = 0.025, color = "white") +
-  
-  # Styling
-  scale_fill_viridis_c(option = "plasma", na.value = "gray90") +
-  scale_color_manual(values = c("blue", "red")) +  # customize as needed
-  theme_minimal() +
-  labs(title = "Percent Unemployed in Unmatched Coops",
-       fill = "Percent Unemployed",
-       color = "Point Group") 
-
-
-
-
-
-
-# NEW TYPE of MAPS #### 
+#  TYPE of MAPS #### 
 coops_map <- coops_maps %>% select(geometry,ID)
-coops_map_dem <- left_join(coops,coops_map, by = "ID") # dataframe that contains demographics and geometry of the POINTS 
-census <- left_join(census_2010_shp,coops, by = "TRTID10") # dataframe that contains demographics and geometry of the census tracts 
+coops_map_dem <- left_join(coops_2020,coops_map, by = "ID") # dataframe that contains demographics and geometry of the POINTS 
+census <- left_join(census_2010_shp, coops_2020, by = "TRTID10") # dataframe that contains demographics and geometry of the census tracts 
 
 census <- st_as_sf(census)
 coops_map_dem <- st_as_sf(coops_map_dem)
 
-# general 
+# general location of coops matched and unmatched
 
 ggplot() +
   geom_sf(data = census, fill = "gray90", color = "white", size = 0.2) +  # base NYC map
@@ -244,7 +93,7 @@ ggplot() +
        fill = "Percent Black",
        color = "Matched Status")
 
-# pwht with circles and triangles 
+# pwht with circles and triangles instead 
 ggplot() +
   # Base map: NY shapefile with light-to-dark blue fill
   geom_sf(data = census, aes(fill = pwht), color = "white", size = 0.2) +
@@ -264,3 +113,4 @@ ggplot() +
     fill = "Percent White",
     shape = "Matched Status"
   )
+

@@ -48,7 +48,7 @@ ny_address <- ny_address %>% mutate(Address = str_squish(Address)) %>% rename(st
 coops_cleaned <- coops_cleaned %>%
   select(street_address, Type) 
 
-#### fixing addresses
+#### cleaning addresses
 
 coops_cleaned$street_address<- str_replace_all(coops_cleaned$street_address, "TIFFA", "TIFFANY") 
 coops_cleaned$street_address<- str_replace_all(coops_cleaned$street_address, "WEST WEST", "WEST") 

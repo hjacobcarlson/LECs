@@ -450,18 +450,6 @@ tract <- tract %>%
 rm(list=ls(pattern="^LTDB_"))
 
 
-
-# Add crime data 
-
-crime <- read_csv("data/crime_clean.csv") %>%
-  rename(year = Year) %>%
-  mutate(year = as.character(year))
-
-tract <- left_join(tract, crime, by = c("year", "TRTID10")) %>%
-  left_join(cdf, by = "year") %>%
-  mutate(hinc20 = hinc * CPIAUCSL)
-
-
 # Joins ####
 
 # Combine tract data from LTDB with co-op tracts 
